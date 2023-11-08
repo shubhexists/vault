@@ -1,5 +1,7 @@
 //This is th documentation for the std::fs module
 //https://doc.rust-lang.org/stable/std/fs/index.html
+mod init;
+use crate::init::init;
 
 fn main() {
     let args: Vec<String> = std::env::args().collect();
@@ -15,6 +17,7 @@ fn main() {
         } else if args[1] == "delete" {
             println!("Deleting a Branch");
         } else if args[1] == "init" {
+            init();
             println!("Init");
         } else {
             println!("Unknown command.");
