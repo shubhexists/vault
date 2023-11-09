@@ -24,3 +24,13 @@ So basically, something like `vault init` should initialize a vault repository i
 8) MAYBE LATER IF WE REACH TILL HERE , we can add the functionality of deleting a branch, merging two branches etc.
 
 Hmm :/, Enough talking, lets start!
+# Set Up Locally 
+1) Clone this repository by running the command `git clone https://github.com/shubhexists/vault`.
+2) `cd` into the directory and run `cargo build --release`. This will create binaries for the project.
+3) Open a new terminal and open `.bashrc` in your favourite editor, say `nano ~/.bashrc`.
+4) Export the path of the executable (It is in the `/target/release/` directory .) For eg, it was
+
+      `export PATH="$PATH:/home/jerry/Desktop/vault/target/release"` for me.
+
+6) Save the file and source the terminal or simple open a new terminal instance.
+7) You are not all set to "VAULTIFY" your local files :)
