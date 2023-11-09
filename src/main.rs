@@ -3,6 +3,7 @@
 
 mod branches;
 mod init;
+mod utils;
 use crate::{
     branches::{create, delete, switch},
     init::init,

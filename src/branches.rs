@@ -1,9 +1,11 @@
 //This file will handles all the logic to create a new branch
 
+use crate::utils::read_current_dir;
 use std::fs;
 use std::path::Path;
 
 //Creates a new branch :)
+//@TODO - Add all current components to the new branch
 pub fn create(branch_name: &str) {
     let path = Path::new(".vault");
     if path.exists() {
@@ -12,6 +14,7 @@ pub fn create(branch_name: &str) {
             println!("Branch already exists");
         } else {
             fs::create_dir(branch_path).expect("Unable to create branch");
+            let _ = read_current_dir();
             println!("Branch created successfully");
         }
     } else {
