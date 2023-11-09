@@ -49,6 +49,7 @@ pub fn switch(branch_name: &str) {
     if path.exists() {
         if branch_path.exists() {
             let _ = fs::write(file_path, branch_name);
+            println!("Switched to branch: {}", branch_name);
         } else {
             println!("Branch {} doesn't exists!", branch_name);
         }
