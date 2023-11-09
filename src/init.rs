@@ -6,9 +6,9 @@ use std::fs::File;
 use std::path::Path;
 
 pub fn init() {
-    let path = Path::new(".vault");
-    let file_path = path.join("CurrentDir");
-    let ignore_file_path = Path::new(".vaultignore");
+    let path: &Path = Path::new(".vault");
+    let file_path: std::path::PathBuf = path.join("CurrentDir");
+    let ignore_file_path: &Path = Path::new(".vaultignore");
     if path.exists() {
         println!("This directory already is a in a vault. Cannot init! ");
     } else {

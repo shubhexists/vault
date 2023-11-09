@@ -7,14 +7,15 @@ use std::path::Path;
 //Creates a new branch :)
 //@TODO - Add all current components to the new branch
 pub fn create(branch_name: &str) {
-    let path = Path::new(".vault");
+    let path: &Path = Path::new(".vault");
     if path.exists() {
-        let branch_path = path.join(branch_name);
+        let branch_path: std::path::PathBuf = path.join(branch_name);
         if branch_path.exists() {
             println!("Branch already exists");
         } else {
             fs::create_dir(branch_path).expect("Unable to create branch");
-            let _ = read_current_dir();
+            let current_dir: std::path::PathBuf = std::env::current_dir().expect("Unable to get current directory");
+            let _ = read_current_dir(&current_dir);
             println!("Branch created successfully");
         }
     } else {
@@ -25,9 +26,9 @@ pub fn create(branch_name: &str) {
 // Deletes a branch !
 //@TODO - A person can not delete an active branch! He has to first switch to another branch to delete any particular branch
 pub fn delete(branch_name: &str) {
-    let path = Path::new(".vault");
+    let path: &Path = Path::new(".vault");
     if path.exists() {
-        let branch_path = path.join(branch_name);
+        let branch_path: std::path::PathBuf = path.join(branch_name);
         if branch_path.exists() {
             println!("Deleting Branch {}", branch_name);
             //How to handle errors here?
@@ -42,9 +43,9 @@ pub fn delete(branch_name: &str) {
 
 //Switches between branches !
 pub fn switch(branch_name: &str) {
-    let path = Path::new(".vault");
-    let file_path = path.join("CurrentDir");
-    let branch_path = path.join(branch_name);
+    let path: &Path = Path::new(".vault");
+    let file_path: std::path::PathBuf = path.join("CurrentDir");
+    let branch_path: std::path::PathBuf = path.join(branch_name);
     if path.exists() {
         if branch_path.exists() {
             let _ = fs::write(file_path, branch_name);
