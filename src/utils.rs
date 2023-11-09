@@ -7,7 +7,6 @@ use std::path::Path;
 //Change the name of the function as it won't just read the contents
 pub fn read_current_dir(current_dir: &Path) -> io::Result<()> {
     let ignored_files: Vec<String> = read_vault_ignore();
-    // let current_dir = std::env::current_dir()?;
     let entries = fs::read_dir(&current_dir)?;
     for entry in entries {
         let entry = entry?;
@@ -50,9 +49,12 @@ pub fn get_current_branch() -> String {
 
 fn read_vault_ignore() -> Vec<String> {
     let filename: &str = ".vaultignore";
+    let path = Path::new(filename);
     let mut result: Vec<String> = Vec::new();
-    for line in read_to_string(filename).unwrap().lines() {
-        result.push(line.to_string())
+    if path.exists() {
+        for line in read_to_string(filename).unwrap().lines() {
+            result.push(line.to_string())
+        }
     }
     result
 }

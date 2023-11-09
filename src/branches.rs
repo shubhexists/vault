@@ -14,8 +14,13 @@ pub fn create(branch_name: &str) {
             println!("Branch already exists");
         } else {
             fs::create_dir(branch_path).expect("Unable to create branch");
-            let current_dir: std::path::PathBuf = std::env::current_dir().expect("Unable to get current directory");
-            let _ = read_current_dir(&current_dir);
+            //For the first time in main branch, user has to do vault add
+            //@TODO - Promt the user in vault add to remove binaries and build type of files to be memory efficient?
+            if branch_name != "main" {
+                let current_dir: std::path::PathBuf =
+                    std::env::current_dir().expect("Unable to get current directory");
+                let _ = read_current_dir(&current_dir);
+            }
             println!("Branch created successfully");
         }
     } else {
