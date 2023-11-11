@@ -55,18 +55,18 @@ pub fn sync_current_dir(current_dir: &Path, current_branch: &str) -> io::Result<
     Ok(())
 }
 
-// pub fn get_current_branch() -> String {
-//     let file_path: &str = ".vault/CurrentDir";
-// let mut file: File = File::open(file_path).expect("Unable to Open");
-// let mut contents: String = String::new();
-// let _ = file.read_to_string(&mut contents);
-//     println!("File contents: {}", contents);
-//     contents
-// }
+pub fn get_current_branch() -> String {
+    let file_path: &str = ".vault/CurrentDir";
+let mut file: File = File::open(file_path).expect("Unable to Open");
+let mut contents: String = String::new();
+let _ = file.read_to_string(&mut contents);
+    println!("File contents: {}", contents);
+    contents
+}
 
-fn read_vault_ignore() -> Vec<String> {
+pub fn read_vault_ignore() -> Vec<String> {
     let filename: &str = ".vaultignore";
-    let path = Path::new(filename);
+    let path: &Path = Path::new(filename);
     let mut result: Vec<String> = Vec::new();
     if path.exists() {
         for line in read_to_string(filename).unwrap().lines() {
@@ -74,4 +74,7 @@ fn read_vault_ignore() -> Vec<String> {
         }
     }
     result
+}
+
+pub fn sync_files_from_branch( branch_name: &str){
 }
