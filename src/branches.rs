@@ -1,6 +1,6 @@
 //This file will handles all the logic to create a new branch
 
-use crate::utils::read_current_dir;
+use crate::utils::sync_current_dir;
 use std::fs;
 use std::path::Path;
 
@@ -19,7 +19,7 @@ pub fn create(branch_name: &str) {
             if branch_name != "main" {
                 let current_dir: std::path::PathBuf =
                     std::env::current_dir().expect("Unable to get current directory");
-                let _ = read_current_dir(&current_dir);
+                let _ = sync_current_dir(&current_dir,&branch_name);
             }
             println!("Branch created successfully");
         }
