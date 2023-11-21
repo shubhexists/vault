@@ -23,8 +23,13 @@ fn main() {
                 println!("Usage: vault create <branch_name>");
             }
         } else if args[1] == "delete" {
-            println!("Deleting a Branch");
-            delete(&args[2]);
+            if args.len() > 2 {
+                println!("Deleting Branch : {}", args[2]);
+                delete(&args[2]);
+            }
+            else {
+                println!("Usage : vault delete <branch_name>");
+            }
         } else if args[1] == "init" {
             init();
             println!("Init");

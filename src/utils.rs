@@ -5,7 +5,6 @@ use std::io::Read;
 use std::io::{self};
 use std::path::Path;
 
-//Change the name of the function as it won't just read the contents
 pub fn sync_current_dir(current_dir: &Path, current_branch: &str) -> io::Result<()> {
     let ignored_files: Vec<String> = read_vault_ignore();
     let vault_path: &Path = Path::new(".vault");
