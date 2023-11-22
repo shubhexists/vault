@@ -10,46 +10,40 @@ use crate::{
     init::init,
 };
 
+use clap::{Parser, Subcommand};
+
+#[derive(Parser)]
+#[command(author, version, about, long_about=None)]
+#[command(propagate_version = true)]
+
+struct CLI {
+    #[command(subcommand)]
+    command: Arguments,
+}
+
+#[derive(Subcommand)]
+enum Arguments {
+    /// Initialize a new vault
+    Init,
+    /// Add files to current branch
+    Add,
+    /// Create a new branch with given name
+    Create {branch_name: String},
+    /// Switch to given branch name
+    Switch {branch_name: String},
+    /// Deletes the given branch
+    Delete {branch_name: String},
+}
+
 fn main() {
-    let args: Vec<String> = std::env::args().collect();
-    if args.len() > 1 {
-        if args[1] == "add" {
-            println!("Adding Files to current Branch");
-        } else if args[1] == "create" {
-            if args.len() > 2 {
-                println!("Creating a Branch: {}", args[2]);
-                create(&args[2]);
-            } else {
-                println!("Usage: vault create <branch_name>");
-            }
-        } else if args[1] == "delete" {
-            if args.len() > 2 {
-                println!("Deleting Branch : {}", args[2]);
-                delete(&args[2]);
-            }
-            else {
-                println!("Usage : vault delete <branch_name>");
-            }
-        } else if args[1] == "init" {
-            init();
-            println!("Init");
-        } else if args[1] == "switch" {
-            if args.len() > 2 {
-                println!("Switching to branch {}", args[2]);
-                switch(&args[2]);
-            } else {
-                println!("Usage: vault switch <branch_name>")
-            }
-        } else {
-            println!("Unknown command.");
-        }
-    } else {
-        println!(
-            "These are some common vault commands used in various situations: 
-1) vault init: Initialize a new vault
-2) vault add: Add files to current branch
-3) vault create <branch_name>: Create a new branch
-4) vault delete: Delete a branch"
-        );
+    let cli = CLI::parse();
+
+    match &cli.command {
+        Arguments::Init => init(),
+        Arguments::Add => println!("Adding Files to current Branch"),
+        Arguments::Create {branch_name} => create(&branch_name),
+        Arguments::Switch {branch_name} => switch(&branch_name).unwrap(),
+        Arguments::Delete {branch_name} => delete(&branch_name),
     }
+
 }
