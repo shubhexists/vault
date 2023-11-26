@@ -1,10 +1,10 @@
 //This file will handles all the logic to create a new branch
 
+use crate::utils::read_vault_ignore;
 use crate::utils::sync_current_dir;
 use std::fs;
 use std::io::{self};
 use std::path::Path;
-use crate::utils::read_vault_ignore;
 
 //Creates a new branch :)
 //@TODO - Add all current components to the new branch
@@ -18,11 +18,11 @@ pub fn create(branch_name: &str) {
             fs::create_dir(branch_path).expect("Unable to create branch");
             //For the first time in main branch, user has to do vault add
             //@TODO - Promt the user in vault add to remove binaries and build type of files to be memory efficient?
-            if branch_name != "main" {
-                let current_dir: std::path::PathBuf =
-                    std::env::current_dir().expect("Unable to get current directory");
-                let _ = sync_current_dir(&current_dir, &branch_name);
-            }
+
+            let current_dir: std::path::PathBuf =
+                std::env::current_dir().expect("Unable to get current directory");
+            let _ = sync_current_dir(&current_dir, &branch_name);
+
             println!("Branch created successfully");
         }
     } else {
@@ -70,14 +70,12 @@ pub fn switch(branch_name: &str) -> io::Result<()> {
                     if !file_name.starts_with('.') {
                         if ignored_files.contains(&file_name.to_string()) {
                         } else {
-                            
                         }
                     }
                 } else if path.is_file() {
                     if !file_name.starts_with('.') {
                         if ignored_files.contains(&file_name.to_string()) {
                         } else {
-
                         }
                     }
                 }

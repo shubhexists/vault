@@ -75,5 +75,8 @@ pub fn read_vault_ignore() -> Vec<String> {
     result
 }
 
-pub fn sync_files_from_branch( branch_name: &str){
+pub fn sync_files_from_branch(){
+    let current_dir: std::path::PathBuf = std::env::current_dir().expect("Unable to get current directory!");
+    let ignored_files: Vec<String> = read_vault_ignore();
+    let entries: Result<fs::ReadDir, io::Error> = fs::read_dir(&current_dir);
 }
