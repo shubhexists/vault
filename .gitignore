@@ -1,3 +1,4 @@
 /target
 .vault
 .vaultignore
+/vault-test

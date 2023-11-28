@@ -50,6 +50,7 @@ pub fn delete(branch_name: &str) {
 
 //Switches between branches !
 pub fn switch(branch_name: &str) -> io::Result<()> {
+    // Make a nested array of hashmap of all the files in .vault/branch_name
     let path: &Path = Path::new(".vault");
     let file_path: std::path::PathBuf = path.join("CurrentDir");
     let branch_path: std::path::PathBuf = path.join(branch_name);
@@ -66,6 +67,7 @@ pub fn switch(branch_name: &str) -> io::Result<()> {
                 //to_string_lossy will handles characters that are not UTF8 encoded in the file name.
                 let file_name: std::borrow::Cow<'_, str> =
                     path.file_name().unwrap_or_default().to_string_lossy();
+                // println!("{}", file_name);
                 if path.is_dir() {
                     if !file_name.starts_with('.') {
                         if ignored_files.contains(&file_name.to_string()) {
@@ -76,6 +78,8 @@ pub fn switch(branch_name: &str) -> io::Result<()> {
                     if !file_name.starts_with('.') {
                         if ignored_files.contains(&file_name.to_string()) {
                         } else {
+                            let branch_file_path: std::path::PathBuf =
+                                branch_path.join(&file_name.to_string());
                         }
                     }
                 }

@@ -36,7 +36,7 @@ enum Arguments {
 }
 
 fn main() {
-    let cli = CLI::parse();
+    let cli: CLI = CLI::parse();
 
     match &cli.command {
         Arguments::Init => init(),
@@ -47,3 +47,4 @@ fn main() {
     }
 
 }
+
