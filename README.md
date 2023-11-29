@@ -34,3 +34,19 @@ Hmm :/, Enough talking, lets start!
 
 6) Save the file and source the terminal or simple open a new terminal instance.
 7) You are not all set to "VAULTIFY" your local files :)
+
+# Todo
+Release 1 - This includes all the basic functionalities that are to be added in vault.
+
+- [x] - `vault init`
+- [x] - `vault create branch_name`
+- [ ] - `vault switch branch_name`
+- [ ] - `vault add`
+- [ ] - `vault delete branch_name`
+
+Release 2 - This includes the compression of the branches and adding support for non text files also..
+- [ ] - Compression using `flate32` crate
+- [ ] - Adding support for non text files (.exe.. etc)
+
+Release 3 - Implementing logic for actual version control system
+- [ ] - Tacking file changes etc..
