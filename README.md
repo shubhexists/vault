@@ -49,4 +49,4 @@ Release 2 - This includes the compression of the branches and adding support for
 - [ ] - Adding support for non text files (.exe.. etc)
 
 Release 3 - Implementing logic for actual version control system
-- [ ] - Tacking file changes etc..
+- [ ] - Tracking file changes etc..
