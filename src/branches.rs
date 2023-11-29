@@ -1,10 +1,12 @@
 //This file will handles all the logic to create a new branch
 
-use crate::utils::read_vault_ignore;
-use crate::utils::sync_current_dir;
+
 use std::fs;
 use std::io::{self};
 use std::path::Path;
+use crate::utils::utils:: read_vault_ignore;
+use crate::utils::sync_dir::sync_current_dir;
+
 
 //Creates a new branch :)
 //@TODO - Add all current components to the new branch
