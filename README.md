@@ -4,7 +4,7 @@ Vault will be a command line tool (if successful) similar to git which would hav
 __     __          _ _   
 \ \   / /_ _ _   _| | |_ 
  \ \ / / _` | | | | | __|
-  \ V / (_| | |_| | | |_ 
+  \ V / (_| | |_| | | |_  
    \_/ \__,_|\__,_|_|\__| , simplified version control for local files
 ```
 
