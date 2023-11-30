@@ -3,6 +3,9 @@ use std::fs;
 use std::fs::File;
 use std::path::Path;
 
+//@TODO - make a utils module with reusable function like create file and create dir... 
+
+
 pub fn init() {
     let current_dir: std::path::PathBuf =
         std::env::current_dir().expect("Unable to get current directory");
