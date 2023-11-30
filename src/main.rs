@@ -3,6 +3,7 @@
 
 // mod branches;
 mod commands;
+mod core;
 // mod utils;
 use crate::commands::init::init;
 
