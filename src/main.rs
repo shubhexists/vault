@@ -4,7 +4,7 @@
 // mod branches;
 mod commands;
 mod core;
-// mod utils;
+mod utils;
 use crate::commands::init::init;
 
 use clap::{Parser, Subcommand};
