@@ -10,6 +10,9 @@ __     __          _ _
 # Releases
 See branches for a specific release of vault.
 
+# References
+Release v1.0.0 will take [Reference](https://dev.to/nopenoshishi/make-your-original-git-analyze-section-139d#de) as a reference to build onto it.
+
 # Set Up Locally 
 1) Clone this repository by running the command `git clone https://github.com/shubhexists/vault`.
 2) `cd` into the directory and run `cargo build --release`. This will create binaries for the project.
