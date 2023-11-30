@@ -5,7 +5,7 @@ __     __          _ _
 \ \   / /_ _ _   _| | |_ 
  \ \ / / _` | | | | | __|
   \ V / (_| | |_| | | |_ 
-   \_/ \__,_|\__,_|_|\__| , simplified version control for local files
+   \_/ \__,_|\__,_|_|\__| , simplified version control for local files 
 ```
 
 # Info
