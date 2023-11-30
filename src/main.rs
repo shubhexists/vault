@@ -1,14 +1,10 @@
 //This is th documentation for the std::fs module
 //https://doc.rust-lang.org/stable/std/fs/index.html
 
-mod branches;
-mod init;
-mod utils;
-
-use crate::{
-    branches::{create, delete, switch},
-    init::init,
-};
+// mod branches;
+mod commands;
+// mod utils;
+use crate::commands::init::init;
 
 use clap::{Parser, Subcommand};
 
@@ -25,14 +21,14 @@ struct CLI {
 enum Arguments {
     /// Initialize a new vault
     Init,
-    /// Add files to current branch
-    Add,
-    /// Create a new branch with given name
-    Create {branch_name: String},
-    /// Switch to given branch name
-    Switch {branch_name: String},
-    /// Deletes the given branch
-    Delete {branch_name: String},
+    // Add files to current branch
+    // Add,
+    // Create a new branch with given name
+    // Create {branch_name: String},
+    // Switch to given branch name
+    // Switch {branch_name: String},
+    // Deletes the given branch
+    // Delete {branch_name: String},
 }
 
 fn main() {
@@ -40,11 +36,9 @@ fn main() {
 
     match &cli.command {
         Arguments::Init => init(),
-        Arguments::Add => println!("Adding Files to current Branch"),
-        Arguments::Create {branch_name} => create(&branch_name),
-        Arguments::Switch {branch_name} => switch(&branch_name).unwrap(),
-        Arguments::Delete {branch_name} => delete(&branch_name),
+        // Arguments::Add => println!("Adding Files to current Branch"),
+        // Arguments::Create {branch_name} => create(&branch_name),
+        // Arguments::Switch {branch_name} => switch(&branch_name).unwrap(),
+        // Arguments::Delete {branch_name} => delete(&branch_name),
     }
-
 }
-
