@@ -5,6 +5,8 @@
 mod commands;
 mod core;
 mod utils;
+mod file_system;
+mod hash;
 use crate::commands::init::init;
 
 use clap::{Parser, Subcommand};

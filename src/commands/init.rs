@@ -1,4 +1,5 @@
 //This will have an init function which will currently create a .vault folder in the current directory
+// VAULT INIT
 use std::fs;
 use std::fs::File;
 use std::path::Path;
