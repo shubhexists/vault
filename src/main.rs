@@ -4,11 +4,10 @@
 // mod branches;
 mod commands;
 mod core;
-mod utils;
 mod file_system;
 mod hash;
+mod utils;
 use crate::commands::init::init;
-
 use clap::{Parser, Subcommand};
 
 #[derive(Parser)]

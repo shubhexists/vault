@@ -14,29 +14,19 @@ pub struct Blob {
 }
 
 impl Blob {
-    pub fn new_blob(file_path: &str) -> io::Result<Blob> {
-        let path: &Path = Path::new(file_path);
-        if path.is_file() {
-            //Determine binary or not :/ (we can add certain extension for which we are sure that the file is definitely text)
-            let contents: Result<String, io::Error> = read_string(file_path);
-            match contents {
-                Ok(string_contents) => {
-                    let content_size: i32 = string_contents.as_bytes().len().try_into().unwrap();
-                    Ok(Blob {
-                        content_size,
-                        content: string_contents,
-                    })
-                }
-                Err(err) => {
-                    panic!("Error reading file: {}", err);
-                }
-            }
-        } else {
-            //This error should not be shown in release (Make it debug only maybe?)
-            //Also this should not be panic here 
-            panic!("Blob can only have files")
-        }
+    pub fn new_blob(content: String) -> io::Result<Blob> {
+        let size: i32 = String::from(content.clone()).chars().count() as i32;
+        Ok(Blob {
+            content_size: size,
+            content,
+        })
+    }
+    pub fn get_content_of_blob(blob: Blob) -> String {
+        let mut file_content: String = String::new();
+        file_content.push_str("blob ");
+        file_content.push_str(&blob.content_size.to_string());
+        file_content.push('\0');
+        file_content.push_str(&blob.content);
+        file_content
     }
 }
-
-

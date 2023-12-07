@@ -1,1 +1,9 @@
-// This will use sha-1 crate to hash the blob to make the file
+//Docummentation - https://docs.rs/sha256/latest/sha256/
+
+use sha256::{digest, try_digest};
+
+pub fn hash_in_SHA256(string_to_hash: &str) -> String {
+    let input_string: String = String::from(&string_to_hash.to_string());
+    let hashed_value: String = digest(input_string);
+    hashed_value
+}
