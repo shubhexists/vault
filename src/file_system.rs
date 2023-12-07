@@ -11,9 +11,9 @@ pub fn save_with_hash(hashed_file_name: &str) -> io::Result<()> {
     let file_name: &str = &hashed_file_name[2..];
     //Now make a directory with dir name and a file with file name
     //TO think if this error message is correct
-    //Also it should not be dirname .. it should be .vault/objects/dirname
     let dir_path: std::path::PathBuf = vault_path.join(dir_name);
-
-
+    fs::create_dir(dir_path.clone()).expect("Some error occurred");
+    let file_path = dir_path.join(file_name);
+    File::create(file_path).expect("Some Error occurred");
     Ok(())
 }

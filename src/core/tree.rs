@@ -10,10 +10,14 @@ tree 41\0folderA\0ab89abcdef0123456789abcdef0123456789ab
 
 #[derive(Debug)]
 pub struct Tree {
-    entries: HashMap<String, GitObject>,
+    entries: Vec<TreeEntry>,
 }
 
-
+#[derive(Debug)]
+pub struct TreeEntry {
+    name: String,
+    object: GitObject
+}
 
 impl Tree {
     //@TODO
