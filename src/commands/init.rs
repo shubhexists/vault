@@ -1,13 +1,12 @@
 //This will have an init function which will currently create a .vault folder in the current directory
 // VAULT INIT
-use std::fs;
 use std::fs::File;
 use std::path::Path;
+use std::{fs, io};
 
-//@TODO - make a utils module with reusable function like create file and create dir... 
+//@TODO - make a utils module with reusable function like create file and create dir...
 
-
-pub fn init() {
+pub fn init() -> io::Result<()> {
     let current_dir: std::path::PathBuf =
         std::env::current_dir().expect("Unable to get current directory");
     let current_dir_str: String = current_dir.to_string_lossy().into_owned();
@@ -18,7 +17,7 @@ pub fn init() {
     let log_head: std::path::PathBuf = logs.join("HEAD");
     let ignore_file_path: &Path = Path::new(".vaultignore");
     if path.exists() {
-        println!("This directory already is a in a vault. Cannot init!");
+        panic!("This directory already is a in a vault. Cannot init!");
     } else {
         //@TODO - Think of better error messages
         //@TODO - If any step fails, reverse all the previous steps...,
@@ -32,5 +31,6 @@ pub fn init() {
         let _ = fs::write(file_path, current_dir_str);
         let _ = File::create(ignore_file_path);
         println!("Vault created successfully");
+        Ok(())
     }
 }

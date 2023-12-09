@@ -15,8 +15,9 @@ pub struct Tree {
 
 #[derive(Debug)]
 pub struct TreeEntry {
-    name: String,
-    object: GitObject
+    pub name: String,
+    pub object: GitObject,
+    pub hashedPath: String
 }
 
 impl Tree {
