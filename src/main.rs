@@ -33,12 +33,13 @@ enum Arguments {
     // Delete {branch_name: String},
 }
 
+
 fn main() {
     let cli: CLI = CLI::parse();
     if let Ok(current_dir) = env::current_dir() {
         let _ = match &cli.command {
             Arguments::Init => init(),
-            Arguments::Commit => commit(&current_dir),
+            Arguments::Commit => commit(&current_dir).unwrap(),
             // Arguments::Create {branch_name} => create(&branch_name),
             // Arguments::Switch {branch_name} => switch(&branch_name).unwrap(),
             // Arguments::Delete {branch_name} => delete(&branch_name),
@@ -47,3 +48,4 @@ fn main() {
         eprintln!("Failed to get the current working directory");
     }
 }
+
