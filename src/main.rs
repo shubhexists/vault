@@ -7,7 +7,7 @@ mod hash;
 mod utils;
 use crate::commands::init::init;
 use clap::{Parser, Subcommand};
-use commands::commit::commit;
+use commands::create;
 use std::env;
 
 #[derive(Parser)]
@@ -24,9 +24,9 @@ enum Arguments {
     /// Initialize a new vault
     Init,
     /// Commit files to current branch
-    Commit,
+    // Commit,
     // Create a new branch with given name
-    // Create {branch_name: String},
+    Create {branch_name: String},
     // Switch to given branch name
     // Switch {branch_name: String},
     // Deletes the given branch
@@ -39,8 +39,8 @@ fn main() {
     if let Ok(current_dir) = env::current_dir() {
         let _ = match &cli.command {
             Arguments::Init => init(),
-            Arguments::Commit => commit(&current_dir).unwrap(),
-            // Arguments::Create {branch_name} => create(&branch_name),
+            // Arguments::Commit => commit(&current_dir).unwrap(),
+            Arguments::Create {branch_name} => create(&branch_name),
             // Arguments::Switch {branch_name} => switch(&branch_name).unwrap(),
             // Arguments::Delete {branch_name} => delete(&branch_name),
         };
