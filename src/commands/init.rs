@@ -1,5 +1,6 @@
 //This will have an init function which will currently create a .vault folder in the current directory
 // VAULT INIT
+use crate::commands::create;
 use crate::utils::InitLayout;
 use std::fs::{self, create_dir};
 use std::path::Path;
@@ -16,6 +17,7 @@ pub fn init() {
            let content: String = get_init_data();
            fs::write(init_file, content).unwrap();
         // @TODO: Add call to branch function with default(master) parameter.
+            create(&"master".to_string());
         // @TODO: Add call to switch function with default(master) parameter.
        },
        Err(_) => println!("Vault already initialized")
