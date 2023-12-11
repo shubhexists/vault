@@ -1,14 +1,9 @@
 //This will have an init function which will currently create a .vault folder in the current directory
 // VAULT INIT
+use crate::utils::InitLayout;
 use std::fs::{self, create_dir};
 use std::path::Path;
-use serde::{Serialize, Deserialize};
 
-#[derive(Serialize, Deserialize, PartialEq, Debug)]
-struct Init_Layout { 
-    current_branch: String, 
-    branches: Vec<String>,
-}
 
 pub fn init() {
     let vault_folder = Path::new(".vault");
@@ -28,9 +23,9 @@ pub fn init() {
 }
 
 fn get_init_data() -> String {
-   let yaml_struct = Init_Layout {
-       current_branch: "master".to_string(),
-       branches: vec!["master".to_string()],
+   let yaml_struct = InitLayout {
+       current_branch: String::new(),
+       branches: Vec::new(),
    };
 
     let yaml_string = serde_yaml::to_string(&yaml_struct).unwrap();
