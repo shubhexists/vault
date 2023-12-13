@@ -7,7 +7,7 @@ mod hash;
 mod utils;
 use crate::commands::init::init;
 use clap::{Parser, Subcommand};
-use commands::create;
+use commands::{create, switch};
 use std::env;
 
 #[derive(Parser)]
@@ -28,7 +28,7 @@ enum Arguments {
     // Create a new branch with given name
     Create {branch_name: String},
     // Switch to given branch name
-    // Switch {branch_name: String},
+    Switch {branch_name: String},
     // Deletes the given branch
     // Delete {branch_name: String},
 }
@@ -41,7 +41,7 @@ fn main() {
             Arguments::Init => init(),
             // Arguments::Commit => commit(&current_dir).unwrap(),
             Arguments::Create {branch_name} => create(&branch_name),
-            // Arguments::Switch {branch_name} => switch(&branch_name).unwrap(),
+            Arguments::Switch {branch_name} => switch(&branch_name),
             // Arguments::Delete {branch_name} => delete(&branch_name),
         };
     } else {
