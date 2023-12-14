@@ -2,3 +2,5 @@
 .vault
 .vaultignore
 /vault-test
+/tmp
+*tmp.rs
