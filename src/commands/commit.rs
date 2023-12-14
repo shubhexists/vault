@@ -9,11 +9,13 @@ use crate::utils::read_files::read_string;
 use flate2::Compression;
 use std::collections::HashMap;
 use std::fs;
+use std::fs::File;
 use std::io;
-use std::path::Path;
+use std::path::{Path, PathBuf};
 
 pub fn commit(dir_path: &Path) -> io::Result<()> {
     let mut entries: Vec<TreeEntry> = Vec::new();
+    let vault_path: &Path = Path::new(".vault/objects");
     if let Ok(entries_result) = fs::read_dir(dir_path) {
         for entry_result in entries_result {
             if let Ok(entry) = entry_result {
@@ -43,6 +45,13 @@ pub fn commit(dir_path: &Path) -> io::Result<()> {
                                     &file_blob.clone().get_content_of_blob();
                                 let hashed_blob_string: String =
                                     hash_in_sha256(&string_to_be_hashed);
+                                // Make a directory with the 1st two letters of the hash
+                                let dir_name: &str = &hashed_blob_string[0..2];
+                                let dir_path: std::path::PathBuf = vault_path.join(dir_name);
+                                let file_name: &str = &hashed_blob_string[2..];
+                                let file_path: std::path::PathBuf = dir_path.join(file_name);
+                                fs::create_dir(dir_path).expect("Some error occurred");
+                                File::create(file_path).expect("Some Error occurred");
                                 entries.push(TreeEntry {
                                     // Enter file Name here
                                     name: "".to_string(),
