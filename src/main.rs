@@ -3,7 +3,6 @@
 mod commands;
 mod compress_zlib;
 mod core;
-mod file_system;
 mod hash;
 mod utils;
 use crate::commands::init::init;
