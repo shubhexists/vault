@@ -8,14 +8,12 @@ use crate::core::types::GitObject;
 use crate::hash::hash_in_sha256;
 use crate::utils::get_current_branch::get_current_branch;
 use crate::utils::read_files::read_string;
-use flate2::Compression;
-use std::collections::HashMap;
 use std::fs;
 use std::fs::File;
-use std::io;
+use std::io::{self, Write};
 use std::path::{Path, PathBuf};
 
-pub fn commit(dir_path: &Path) -> io::Result<()> {
+fn handle_commit(dir_path: &Path) -> io::Result<Vec<TreeEntry>> {
     let mut entries: Vec<TreeEntry> = Vec::new();
     let current_branch: Result<String, io::Error> = get_current_branch();
     match current_branch {
@@ -30,7 +28,8 @@ pub fn commit(dir_path: &Path) -> io::Result<()> {
                             .file_type()
                             .map_or(false, |ft: fs::FileType| ft.is_dir())
                         {
-                            let subdirectory_entries: Result<(), io::Error> = commit(&entry.path());
+                            let subdirectory_entries: Result<Vec<TreeEntry>, io::Error> =
+                                handle_commit(&entry.path());
                             // let sub_dir_tree: crate::core::tree::Tree = make_tree(subdirectory_entries);
                             //Push entry of type GitObject::Tree
                             entries.push(
@@ -68,7 +67,8 @@ pub fn commit(dir_path: &Path) -> io::Result<()> {
                                         let file_path: std::path::PathBuf =
                                             dir_path.join(file_name);
                                         fs::create_dir(dir_path).expect("Some error occurred");
-                                        File::create(file_path).expect("Some Error occurred");
+                                        let mut file: File = File::create(file_path)?;
+                                        let _ = file.write_all(&compressed_content);
                                         entries.push(TreeEntry {
                                             // Enter file Name here
                                             name: "".to_string(),
@@ -88,5 +88,13 @@ pub fn commit(dir_path: &Path) -> io::Result<()> {
         Err(e) => panic!("Failed to read YAML"),
     }
 
-    Ok(())
+    Ok(entries)
+}
+
+pub fn commit(dir_path: &Path) -> io::Result<()> {
+    let commit = handle_commit(dir_path);
+    match commit {
+        Ok(_) => Ok(()),
+        Err(e) => panic!("Failed to Commit: {e}"),
+    }
 }
