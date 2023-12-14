@@ -5,6 +5,7 @@ mod core;
 mod file_system;
 mod hash;
 mod utils;
+mod compress_zlib;
 use crate::commands::init::init;
 use clap::{Parser, Subcommand};
 use commands::{create, switch};
