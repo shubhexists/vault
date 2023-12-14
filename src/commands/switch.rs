@@ -1,4 +1,4 @@
-use crate::utils::InitLayout;
+use crate::utils::yaml_layouts::InitLayout;
 use std::fs;
 use std::path::Path;
 

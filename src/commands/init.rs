@@ -1,7 +1,7 @@
 //This will have an init function which will currently create a .vault folder in the current directory
 // VAULT INIT
 use crate::commands::{create, switch};
-use crate::utils::InitLayout;
+use crate::utils::yaml_layouts::InitLayout;
 use std::fs::{self, create_dir};
 use std::path::Path;
 
