@@ -10,7 +10,7 @@ tree 41\0folderA\0ab89abcdef0123456789abcdef0123456789ab
 
 #[derive(Debug)]
 pub struct Tree {
-    entries: Vec<TreeEntry>,
+    pub entries: Vec<TreeEntry>,
     pub content: String,
     content_size: i32,
 }
@@ -26,7 +26,7 @@ impl Tree {
     pub fn make_tree(entries: Vec<TreeEntry>) -> io::Result<Tree> {
         let mut tree_content: String = String::new();
         for tree_element in &entries {
-            let tree_entry_content = Tree::get_contents_of_tree_element(tree_element);
+            let tree_entry_content: String = Tree::get_contents_of_tree_element(tree_element);
             tree_content.push_str(&tree_entry_content);
             tree_content.push('\n');
         }
