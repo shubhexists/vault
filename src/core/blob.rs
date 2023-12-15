@@ -7,7 +7,7 @@ blob 23\0This is the content of the file.
 
 #[derive(Debug, Clone)]
 pub struct Blob {
-    content_size: i32,
+    pub content_size: i32,
     content: String,
 }
 
