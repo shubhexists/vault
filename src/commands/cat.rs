@@ -1,4 +1,4 @@
-use crate::{compress_zlib::decompress_zlib, utils::get_current_branch::get_current_branch};
+use crate::{utils::compress_zlib::decompress_zlib, utils::get_current_branch::get_current_branch};
 use std::{fs::File, io, path::Path};
 
 pub fn cat(hash_string: &str) -> io::Result<()> {

@@ -1,9 +1,7 @@
 //This is th documentation for the std::fs module
 //https://doc.rust-lang.org/stable/std/fs/index.html
 mod commands;
-mod compress_zlib;
 mod core;
-mod hash;
 mod utils;
 use crate::commands::init::init;
 use clap::{Parser, Subcommand};

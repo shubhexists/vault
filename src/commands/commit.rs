@@ -1,4 +1,4 @@
-use crate::compress_zlib::compress_zlib;
+use crate::utils::compress_zlib::compress_zlib;
 use crate::core::blob::Blob;
 use crate::core::commit::Commit;
 //VAULT COMMIT
@@ -6,7 +6,7 @@ use crate::core::commit::Commit;
 // No add . apparently : )
 use crate::core::tree::{Tree, TreeEntry};
 use crate::core::types::GitObject;
-use crate::hash::hash_in_sha256;
+use crate::utils::hash::hash_in_sha256;
 use crate::utils::get_current_branch::get_current_branch;
 use crate::utils::read_files::read_string;
 use std::fs;
@@ -167,7 +167,7 @@ pub fn commit(dir_path: &Path) -> io::Result<()> {
                                     // @TODO - the "-m " text should be passed here as a string
                                     let current_commit: Result<Commit, io::Error> =
                                         Commit::new_commit("New Commit !", hash_in_sha256);
-                                    
+
                                     Ok(())
                                 }
                                 Err(e) => {

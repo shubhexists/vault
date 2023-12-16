@@ -8,4 +8,3 @@ pub enum GitObject {
     Tree(Tree),
     Commit(Commit)
 }
-
