@@ -24,7 +24,7 @@ fn handle_commit(dir_path: &Path) -> io::Result<Vec<TreeEntry>> {
             if let Ok(entries_result) = fs::read_dir(dir_path) {
                 for entry_result in entries_result {
                     if let Ok(entry) = entry_result {
-                        let entry_name = entry.file_name();
+                        let entry_name: std::ffi::OsString = entry.file_name();
                         if entry_name != ".vault" {
                             if entry
                                 .file_type()
@@ -135,9 +135,52 @@ fn handle_commit(dir_path: &Path) -> io::Result<Vec<TreeEntry>> {
 }
 
 pub fn commit(dir_path: &Path) -> io::Result<()> {
-    let commit = handle_commit(dir_path);
-    match commit {
-        Ok(_) => Ok(()),
-        Err(e) => panic!("Failed to Commit: {e}"),
+    let commit: Result<Vec<TreeEntry>, io::Error> = handle_commit(dir_path);
+    let vault = Path::new(".vault");
+    let current_branch: Result<String, io::Error> = get_current_branch();
+    match current_branch {
+        Ok(current_branch) => {
+            let vault_branch_path: PathBuf = vault.join(current_branch);
+            let vault_path = vault_branch_path.join("objects");
+            match commit {
+                Ok(vec_tree) => {
+                    let main_repo_tree: Result<Tree, io::Error> = Tree::make_tree(vec_tree);
+                    match main_repo_tree {
+                        Ok(dir_tree) => {
+                            let string_to_be_hashed: &String = &dir_tree.content;
+                            let compressed_content: Result<Vec<u8>, io::Error> =
+                                compress_zlib(&string_to_be_hashed);
+                            match compressed_content {
+                                Ok(compressed_content) => {
+                                    let hash_in_sha256: String =
+                                        hash_in_sha256(&string_to_be_hashed);
+                                    let dir_name: &str = &&hash_in_sha256[0..2];
+                                    let dir_path: std::path::PathBuf = vault_path.join(dir_name);
+                                    let file_name: &str = &&hash_in_sha256[2..];
+                                    let file_path: std::path::PathBuf = dir_path.join(file_name);
+                                    if let Err(_) = fs::metadata(dir_path.clone()) {
+                                        let _is_already_created =
+                                            fs::create_dir(dir_path).expect("Some error occurred");
+                                    }
+                                    let mut file: File = File::create(file_path)?;
+                                    let _ = file.write_all(&compressed_content);
+                                    Ok(())
+                                }
+                                Err(e) => {
+                                    panic!("Some error Occurred: {e}")
+                                }
+                            }
+                        }
+                        Err(e) => {
+                            panic!("Some Error Occurred: {e}")
+                        }
+                    }
+                }
+                Err(e) => panic!("Failed to Commit: {e}"),
+            }
+        }
+        Err(e) => {
+            panic!("Some error occurred : {e}")
+        }
     }
 }
