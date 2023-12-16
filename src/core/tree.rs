@@ -49,9 +49,6 @@ impl Tree {
                 file_content.push_str("tree ");
                 file_content.push_str(&tree.content_size.to_string());
             }
-            GitObject::Commit(_commit) => {
-                panic!("Element 'Commit' can not be inside 'Tree'")
-            }
         }
         file_content.push('\0');
         file_content.push_str(&entry.name);
