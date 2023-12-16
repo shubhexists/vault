@@ -564,7 +564,6 @@ dependencies = [
  "chrono",
  "clap",
  "flate2",
- "hex",
  "serde",
  "serde_json",
  "serde_yaml",

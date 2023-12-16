@@ -130,7 +130,6 @@ fn handle_commit(dir_path: &Path) -> io::Result<Vec<TreeEntry>> {
         }
         Err(e) => panic!("Failed to read YAML: {e}"),
     }
-
     Ok(entries)
 }
 
