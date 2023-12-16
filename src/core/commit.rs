@@ -36,8 +36,10 @@ impl Commit {
             parent,
         })
     }
-    pub fn get_content_of_commit(self) -> io::Result<String> {
+
+    pub fn get_content_of_commit(self) -> String {
         let mut content: String = String::new();
+        let date_str: &String = &self.date_time.to_string();
         content.push_str("tree ");
         content.push_str(&self.commit_hash);
         content.push('\n');
@@ -52,10 +54,10 @@ impl Commit {
         content.push_str(&self.author);
         content.push('\n');
         content.push_str("date_time ");
-        //@TODO - Date here
+        content.push_str(&date_str);
         content.push('\n');
         content.push_str("message ");
         content.push_str(&self.message);
-        Ok(content)
+        content
     }
 }

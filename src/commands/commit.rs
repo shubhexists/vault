@@ -1,13 +1,13 @@
-use crate::utils::compress_zlib::compress_zlib;
-use crate::core::blob::Blob;
-use crate::core::commit::Commit;
 //VAULT COMMIT
 // Loop around the directory and make the commit
 // No add . apparently : )
+use crate::core::blob::Blob;
+use crate::core::commit::Commit;
 use crate::core::tree::{Tree, TreeEntry};
 use crate::core::types::GitObject;
-use crate::utils::hash::hash_in_sha256;
+use crate::utils::compress_zlib::compress_zlib;
 use crate::utils::get_current_branch::get_current_branch;
+use crate::utils::hash::hash_in_sha256;
 use crate::utils::read_files::read_string;
 use std::fs;
 use std::fs::File;
@@ -134,6 +134,7 @@ fn handle_commit(dir_path: &Path) -> io::Result<Vec<TreeEntry>> {
     Ok(entries)
 }
 
+//@TODO - Sync this function to config.yaml
 pub fn commit(dir_path: &Path) -> io::Result<()> {
     let commit: Result<Vec<TreeEntry>, io::Error> = handle_commit(dir_path);
     let vault = Path::new(".vault");
@@ -152,12 +153,13 @@ pub fn commit(dir_path: &Path) -> io::Result<()> {
                                 compress_zlib(&string_to_be_hashed);
                             match compressed_content {
                                 Ok(compressed_content) => {
-                                    let hash_in_sha256: String =
+                                    let hash_main_dir_in_sha256: String =
                                         hash_in_sha256(&string_to_be_hashed);
-                                    let dir_name: &str = &&hash_in_sha256[0..2];
+                                    let dir_name: &str = &&hash_main_dir_in_sha256[0..2];
                                     let dir_path: std::path::PathBuf = vault_path.join(dir_name);
-                                    let file_name: &str = &&hash_in_sha256[2..];
+                                    let file_name: &str = &&hash_main_dir_in_sha256[2..];
                                     let file_path: std::path::PathBuf = dir_path.join(file_name);
+                                    // Not Good Logic ig?
                                     if let Err(_) = fs::metadata(dir_path.clone()) {
                                         let _is_already_created =
                                             fs::create_dir(dir_path).expect("Some error occurred");
@@ -166,25 +168,55 @@ pub fn commit(dir_path: &Path) -> io::Result<()> {
                                     let _ = file.write_all(&compressed_content);
                                     // @TODO - the "-m " text should be passed here as a string
                                     let current_commit: Result<Commit, io::Error> =
-                                        Commit::new_commit("New Commit !", hash_in_sha256);
-
+                                        Commit::new_commit("New Commit !", hash_main_dir_in_sha256);
+                                    match current_commit {
+                                        Ok(current_commit) => {
+                                            let commit_content: String =
+                                                Commit::get_content_of_commit(current_commit);
+                                            let compressed_commit_content: Result<
+                                                Vec<u8>,
+                                                io::Error,
+                                            > = compress_zlib(&commit_content);
+                                            match compressed_commit_content {
+                                                Ok(compressed_commit_content) => {
+                                                    let hash_commit_content_in_sha256: String =
+                                                        hash_in_sha256(&commit_content);
+                                                    let dir_name: &str =
+                                                        &hash_commit_content_in_sha256[..2];
+                                                    let file_name: &str =
+                                                        &hash_commit_content_in_sha256[..2];
+                                                    let dir_path: std::path::PathBuf =
+                                                        vault_path.join(dir_name);
+                                                    let file_path: PathBuf =
+                                                        dir_path.join(file_name);
+                                                    // Not Good Logic ig?
+                                                    if let Err(_) = fs::metadata(dir_path.clone()) {
+                                                        let _is_already_created =
+                                                            fs::create_dir(dir_path)
+                                                                .expect("Some error occurred");
+                                                    }
+                                                    let mut file: File = File::create(file_path)?;
+                                                    let _ =
+                                                        file.write_all(&compressed_commit_content);
+                                                }
+                                                Err(e) => {
+                                                    panic!("Some Error Occurred: {e}");
+                                                }
+                                            }
+                                        }
+                                        Err(e) => panic!("Some error Occurred : {e}"),
+                                    }
                                     Ok(())
                                 }
-                                Err(e) => {
-                                    panic!("Some error Occurred: {e}")
-                                }
+                                Err(e) => panic!("Some error Occurred: {e}"),
                             }
                         }
-                        Err(e) => {
-                            panic!("Some Error Occurred: {e}")
-                        }
+                        Err(e) => panic!("Some Error Occurred: {e}"),
                     }
                 }
                 Err(e) => panic!("Failed to Commit: {e}"),
             }
         }
-        Err(e) => {
-            panic!("Some error occurred : {e}")
-        }
+        Err(e) => panic!("Some error occurred : {e}"),
     }
 }
