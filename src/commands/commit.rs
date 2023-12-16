@@ -184,7 +184,7 @@ pub fn commit(dir_path: &Path) -> io::Result<()> {
                                                     let dir_name: &str =
                                                         &hash_commit_content_in_sha256[..2];
                                                     let file_name: &str =
-                                                        &hash_commit_content_in_sha256[..2];
+                                                        &hash_commit_content_in_sha256[2..];
                                                     let dir_path: std::path::PathBuf =
                                                         vault_path.join(dir_name);
                                                     let file_path: PathBuf =
