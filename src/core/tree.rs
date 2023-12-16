@@ -44,17 +44,16 @@ impl Tree {
             GitObject::Blob(blob) => {
                 file_content.push_str("blob ");
                 file_content.push_str(&blob.content_size.to_string());
-                file_content.push('\0');
             }
             GitObject::Tree(tree) => {
                 file_content.push_str("tree ");
                 file_content.push_str(&tree.content_size.to_string());
-                file_content.push('\0');
             }
             GitObject::Commit(_commit) => {
                 panic!("Element 'Commit' can not be inside 'Tree'")
             }
         }
+        file_content.push('\0');
         file_content.push_str(&entry.name);
         file_content.push('\0');
         file_content.push_str(&entry.hashed_path);

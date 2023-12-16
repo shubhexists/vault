@@ -1,5 +1,6 @@
 use crate::compress_zlib::compress_zlib;
 use crate::core::blob::Blob;
+use crate::core::commit::Commit;
 //VAULT COMMIT
 // Loop around the directory and make the commit
 // No add . apparently : )
@@ -163,6 +164,10 @@ pub fn commit(dir_path: &Path) -> io::Result<()> {
                                     }
                                     let mut file: File = File::create(file_path)?;
                                     let _ = file.write_all(&compressed_content);
+                                    // @TODO - the "-m " text should be passed here as a string
+                                    let current_commit: Result<Commit, io::Error> =
+                                        Commit::new_commit("New Commit !", hash_in_sha256);
+                                    
                                     Ok(())
                                 }
                                 Err(e) => {

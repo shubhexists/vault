@@ -7,7 +7,7 @@ use std::io;
 commit 257\0
 tree 41\0blob 41\0fileA.txt\0123456789abcdef0123456789abcdef01234567
 parent abcdef0123456789abcdef0123456789abcdef01
-author John Doe 
+author John Doe
 
 Commit message goes here.
  */
@@ -26,6 +26,7 @@ impl Commit {
     pub fn new_commit(commit_message: &str, root_repository_tree_hash: String) -> io::Result<Self> {
         let date_time: DateTime<Utc> = Utc::now();
         let username: String = whoami::realname();
+        //@TODO - For now kept it None, read the last commit in the yaml and add it to this param..
         let parent: Option<Tree> = Option::None;
         let commit_hash: String = root_repository_tree_hash;
         Ok(Commit {
@@ -33,7 +34,10 @@ impl Commit {
             message: commit_message.to_string(),
             author: username,
             commit_hash,
-            parent
+            parent,
         })
+    }
+    pub fn get_content_of_commit(self) -> io::Result<String> {
+        todo!("I still have to finalize the contents of the commit file")
     }
 }
