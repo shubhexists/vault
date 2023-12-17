@@ -137,7 +137,7 @@ fn handle_commit(dir_path: &Path) -> io::Result<Vec<TreeEntry>> {
 }
 
 //@TODO - Sync this function to config.yaml
-pub fn commit(dir_path: &Path) -> io::Result<()> {
+pub fn commit(dir_path: &Path, message: &str) -> io::Result<()> {
     let commit: Result<Vec<TreeEntry>, io::Error> = handle_commit(dir_path);
     let vault = Path::new(".vault");
     let current_branch: Result<String, io::Error> = get_current_branch();
@@ -168,9 +168,8 @@ pub fn commit(dir_path: &Path) -> io::Result<()> {
                                     }
                                     let mut file: File = File::create(file_path)?;
                                     let _ = file.write_all(&compressed_content);
-                                    // @TODO - the "-m " text should be passed here as a string
                                     let current_commit: Result<Commit, io::Error> =
-                                        Commit::new_commit("New Commit !", hash_main_dir_in_sha256);
+                                        Commit::new_commit(message, hash_main_dir_in_sha256);
                                     match current_commit {
                                         Ok(current_commit) => {
                                             let commit_content: String =
