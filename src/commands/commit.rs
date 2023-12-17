@@ -68,7 +68,10 @@ fn handle_commit(dir_path: &Path) -> io::Result<Vec<TreeEntry>> {
                                                             File::create(file_path)?;
                                                         let _ = file.write_all(&compressed_content);
                                                         entries.push(TreeEntry {
-                                                            name: "".to_string(),
+                                                            name: entry_name
+                                                                .to_str()
+                                                                .unwrap()
+                                                                .to_string(),
                                                             object: GitObject::Tree(sub_dir_tree),
                                                             hashed_path: hashed_tree_string,
                                                         });
@@ -113,8 +116,7 @@ fn handle_commit(dir_path: &Path) -> io::Result<Vec<TreeEntry>> {
                                             let mut file: File = File::create(file_path)?;
                                             let _ = file.write_all(&compressed_content);
                                             entries.push(TreeEntry {
-                                                // Enter file Name here
-                                                name: "".to_string(),
+                                                name: entry_name.to_str().unwrap().to_string(),
                                                 object: GitObject::Blob(file_blob),
                                                 hashed_path: hashed_blob_string,
                                             });
