@@ -1,5 +1,8 @@
+use std::path::Path;
 
 use serde::{Deserialize, Serialize};
+
+use super::get_current_branch::{self, get_current_branch};
 
 #[derive(Serialize, Deserialize, PartialEq, Debug)]
 pub struct InitLayout {
@@ -22,8 +25,7 @@ struct Commit {
 
 #[derive(Serialize, Deserialize, PartialEq, Debug)]
 struct Hash {
-    short: String,
-    long: String,
+    hash: String,
 }
 
 impl Default for ConfigLayout {
@@ -37,7 +39,16 @@ impl Default for ConfigLayout {
 }
 
 impl ConfigLayout {
-    fn add_commit() {
-        // @TODO: Add login to update commit in struct.
+    fn add_commit(commit_data: &Commit) {
+        let current_branch: Result<String, std::io::Error> = get_current_branch();
+        match current_branch {
+            Ok(current_branch) => {
+                let vault_path: &Path = Path::new(".vault");
+                let branch_path: std::path::PathBuf = vault_path.join(current_branch);
+                let config_path: std::path::PathBuf = branch_path.join("config.yaml");
+                todo!()
+            }
+            Err(e) => panic!("Some error occurred: {e}"),
+        }
     }
 }

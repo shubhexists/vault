@@ -9,14 +9,13 @@ pub fn create(branch_name: &String) {
     let content: std::borrow::Cow<'_, str> = String::from_utf8_lossy(&content_bytes);
     let mut init_content: InitLayout = serde_yaml::from_str(&content).unwrap();
 
-    init_content.branches.push(branch_name.clone());
-    let branch_folder: PathBuf = vault_folder.join(branch_name.clone());
+    init_content.branches.push(branch_name.to_string());
+    let branch_folder: PathBuf = vault_folder.join(branch_name);
     let branch_object_folder: PathBuf = branch_folder.join("objects");
     // @TODO Handle Error here with match statements
     fs::create_dir(&branch_folder).unwrap();
     fs::create_dir(branch_object_folder).unwrap();
     create_config_yaml(&branch_folder);
-    println!("content of init.yaml file \n{:?}", init_content);
     let yaml_string: String = serde_yaml::to_string(&init_content).unwrap();
     fs::write(init_file, yaml_string).unwrap();
 }
