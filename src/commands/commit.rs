@@ -88,11 +88,11 @@ fn handle_commit(dir_path: &Path) -> io::Result<Vec<TreeEntry>> {
                                 }
                             } else {
                                 let file_dir_path: PathBuf = entry.path();
-                                
+
                                 let file_contents: Vec<u8> =
                                     read_bytes(file_dir_path.clone()).unwrap();
-                                let file_blob: Result<Blob, io::Error> = 
-                                        Blob::new_blob(file_contents);
+                                let file_blob: Result<Blob, io::Error> =
+                                    Blob::new_blob(file_contents);
                                 match file_blob {
                                     Ok(file_blob) => {
                                         let string_to_be_hashed: &String =
@@ -130,7 +130,12 @@ fn handle_commit(dir_path: &Path) -> io::Result<Vec<TreeEntry>> {
                 }
             }
         }
-        Err(e) => panic!("Failed to read YAML: {e}"),
+        Err(_e) => {
+            io::Error::new(
+                io::ErrorKind::InvalidInput,
+                "Invalid Data found in .vault/init.yaml",
+            );
+        }
     }
     Ok(entries)
 }
@@ -217,6 +222,6 @@ pub fn commit(dir_path: &Path, message: &str) -> io::Result<()> {
                 Err(e) => panic!("Failed to Commit: {e}"),
             }
         }
-        Err(e) => panic!("Some error occurred : {e}"),
+        Err(e) => panic!("{e}"),
     }
 }
