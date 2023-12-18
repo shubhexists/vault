@@ -11,7 +11,7 @@ pub fn cat(hash_string: &str) -> io::Result<()> {
     let branch_object_path: std::path::PathBuf = branch_path.join("objects");
     let hash_dir_path: std::path::PathBuf = branch_object_path.join(dir_name);
     let file_path: std::path::PathBuf = hash_dir_path.join(file_path);
-    // Since this would read from the current directory only,  If the file is not found, promt the user to check if his directory is correct
+    // Since this would read from the current directory only,  If the file is not found, prompt the user to check if his directory is correct
     let file: File = File::open(file_path)?;
     let _ = decompress_zlib(file);
     Ok(())

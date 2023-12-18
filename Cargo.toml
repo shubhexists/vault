@@ -5,7 +5,7 @@ edition = "2021"
 authors = [
     "Shubham singh		<github: github.com/shubhexists>",
     "Sahaj      <github: github.com/itsDrac>"
-    ]
+]
 about = "A simplified version control system built in Rust for local files, quite similar to how git functions."
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html

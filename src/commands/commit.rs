@@ -9,6 +9,7 @@ use crate::utils::compress_zlib::compress_zlib;
 use crate::utils::get_current_branch::get_current_branch;
 use crate::utils::hash::hash_in_sha256;
 use crate::utils::read_files::read_bytes;
+use crate::utils::yaml_layouts::{self, ConfigLayout};
 use std::fs;
 use std::fs::File;
 use std::io::{self, Write};
@@ -203,6 +204,16 @@ pub fn commit(dir_path: &Path, message: &str) -> io::Result<()> {
                                                     let mut file: File = File::create(file_path)?;
                                                     let _ =
                                                         file.write_all(&compressed_commit_content);
+                                                    //@TODO - Think what can we do here maybe?
+                                                    let _write_in_config_file: Result<
+                                                        (),
+                                                        io::Error,
+                                                    > = ConfigLayout::add_commit(
+                                                        yaml_layouts::Commit {
+                                                            hash: hash_commit_content_in_sha256,
+                                                            message: message.to_string(),
+                                                        },
+                                                    );
                                                 }
                                                 Err(e) => {
                                                     panic!("Some Error Occurred: {e}");

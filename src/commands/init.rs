@@ -16,9 +16,7 @@ pub fn init() {
             let content: String = get_init_data();
             fs::File::create(ignore_file_path).unwrap();
             fs::write(init_file, content).unwrap();
-            // @TODO: Add call to branch function with default(master) parameter.
             create(&"master".to_string());
-            // @TODO: Add call to switch function with default(master) parameter.
             switch(&"master".to_string());
         }
         Err(_) => println!("Vault already initialized"),
