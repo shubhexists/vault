@@ -2,7 +2,7 @@ use std::path::Path;
 
 use serde::{Deserialize, Serialize};
 
-use super::get_current_branch::{self, get_current_branch};
+use super::get_current_branch::get_current_branch;
 
 #[derive(Serialize, Deserialize, PartialEq, Debug)]
 pub struct InitLayout {

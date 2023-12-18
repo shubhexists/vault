@@ -8,7 +8,7 @@ use crate::core::types::GitObject;
 use crate::utils::compress_zlib::compress_zlib;
 use crate::utils::get_current_branch::get_current_branch;
 use crate::utils::hash::hash_in_sha256;
-use crate::utils::read_files::read_string;
+use crate::utils::read_files::read_bytes;
 use std::fs;
 use std::fs::File;
 use std::io::{self, Write};
@@ -87,43 +87,42 @@ fn handle_commit(dir_path: &Path) -> io::Result<Vec<TreeEntry>> {
                                     Err(e) => panic!("Some Error Occurred! {e}"),
                                 }
                             } else {
-                                // Read file content and create a blob object
-                                if let Ok(_content) = fs::read(entry.path()) {
-                                    //Using Read string as I don't down if I can read binary from a text file
-                                    let file_contents: String = read_string(entry.path()).unwrap();
-                                    let file_blob: Result<Blob, std::io::Error> =
+                                let file_dir_path: PathBuf = entry.path();
+                                
+                                let file_contents: Vec<u8> =
+                                    read_bytes(file_dir_path.clone()).unwrap();
+                                let file_blob: Result<Blob, io::Error> = 
                                         Blob::new_blob(file_contents);
-                                    match file_blob {
-                                        Ok(file_blob) => {
-                                            let string_to_be_hashed: &String =
-                                                &file_blob.clone().get_content_of_blob();
-                                            let compressed_content: Vec<u8> =
-                                                compress_zlib(&string_to_be_hashed)?;
-                                            let hashed_blob_string: String =
-                                                hash_in_sha256(&string_to_be_hashed);
-                                            // Make a directory with the 1st two letters of the hash
-                                            let dir_name: &str = &hashed_blob_string[0..2];
-                                            let dir_path: std::path::PathBuf =
-                                                vault_path.join(dir_name);
-                                            let file_name: &str = &hashed_blob_string[2..];
-                                            let file_path: std::path::PathBuf =
-                                                dir_path.join(file_name);
-                                            // BAD LOGIC HERE !
-                                            if let Err(_) = fs::metadata(dir_path.clone()) {
-                                                let _is_already_created = fs::create_dir(dir_path)
-                                                    .expect("Some error occurred");
-                                            }
-                                            let mut file: File = File::create(file_path)?;
-                                            let _ = file.write_all(&compressed_content);
-                                            entries.push(TreeEntry {
-                                                name: entry_name.to_str().unwrap().to_string(),
-                                                object: GitObject::Blob(file_blob),
-                                                hashed_path: hashed_blob_string,
-                                            });
+                                match file_blob {
+                                    Ok(file_blob) => {
+                                        let string_to_be_hashed: &String =
+                                            &file_blob.clone().get_content_of_blob();
+                                        let compressed_content: Vec<u8> =
+                                            compress_zlib(&string_to_be_hashed)?;
+                                        let hashed_blob_string: String =
+                                            hash_in_sha256(&string_to_be_hashed);
+                                        // Make a directory with the 1st two letters of the hash
+                                        let dir_name: &str = &hashed_blob_string[0..2];
+                                        let dir_path: std::path::PathBuf =
+                                            vault_path.join(dir_name);
+                                        let file_name: &str = &hashed_blob_string[2..];
+                                        let file_path: std::path::PathBuf =
+                                            dir_path.join(file_name);
+                                        // BAD LOGIC HERE !
+                                        if let Err(_) = fs::metadata(dir_path.clone()) {
+                                            let _is_already_created = fs::create_dir(dir_path)
+                                                .expect("Some error occurred");
                                         }
-                                        //Think what could be the error actually shown to the user?
-                                        Err(_e) => panic!("Some Error Occurred"),
+                                        let mut file: File = File::create(file_path)?;
+                                        let _ = file.write_all(&compressed_content);
+                                        entries.push(TreeEntry {
+                                            name: entry_name.to_str().unwrap().to_string(),
+                                            object: GitObject::Blob(file_blob),
+                                            hashed_path: hashed_blob_string,
+                                        });
                                     }
+                                    //Think what could be the error actually shown to the user?
+                                    Err(_e) => panic!("Some Error Occurred"),
                                 }
                             }
                         }

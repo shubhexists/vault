@@ -1,5 +1,3 @@
-//This is th documentation for the std::fs module
-//https://doc.rust-lang.org/stable/std/fs/index.html
 mod commands;
 mod core;
 mod utils;
@@ -34,8 +32,7 @@ enum Arguments {
     Switch { branch_name: String },
     /// Get the actual data, stored in the ZLib hash
     Cat { hash_string: String },
-    /// Deletes the given branch,
-    /// Use `vault delete .` to entirely remove vault from your directory!
+    /// Deletes the given branch, Use `vault delete .` to entirely remove vault from your directory!
     Delete { branch_name: String },
 }
 

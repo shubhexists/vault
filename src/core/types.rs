@@ -4,5 +4,11 @@ use super::tree::Tree;
 #[derive(Debug)]
 pub enum GitObject {
     Blob(Blob),
-    Tree(Tree)
+    Tree(Tree),
+}
+
+#[derive(Debug, Clone)]
+pub enum FileTypes {
+    Utf8,
+    NonUTF8,
 }
