@@ -13,12 +13,3 @@ pub fn read_bytes<P: AsRef<Path>>(file_path: P) -> Result<Vec<u8>> {
 
     Ok(bytes)
 }
-
-/// This function will be used to read string files (.txt, .rs etc etc )
-pub fn read_string<P: AsRef<Path>>(file_path: P) -> Result<String> {
-    let mut file: std::fs::File = OpenOptions::new().read(true).open(file_path)?;
-    let mut content: String = String::new();
-    file.read_to_string(&mut content)?;
-
-    Ok(content)
-}
