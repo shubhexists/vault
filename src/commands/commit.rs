@@ -88,17 +88,11 @@ fn handle_commit(dir_path: &Path) -> io::Result<Vec<TreeEntry>> {
                                 }
                             } else {
                                 let file_dir_path: PathBuf = entry.path();
-                                let file_extension: &Option<&str> = &file_dir_path
-                                    .extension()
-                                    .and_then(|ext: &std::ffi::OsStr| ext.to_str());
+                                
                                 let file_contents: Vec<u8> =
                                     read_bytes(file_dir_path.clone()).unwrap();
-                                let file_blob: Result<Blob, io::Error> = match file_extension {
-                                    Some(file_ext) => {
-                                        Blob::new_blob(file_contents, Some(file_ext.to_string()))
-                                    }
-                                    None => Blob::new_blob(file_contents, None),
-                                };
+                                let file_blob: Result<Blob, io::Error> = 
+                                        Blob::new_blob(file_contents);
                                 match file_blob {
                                     Ok(file_blob) => {
                                         let string_to_be_hashed: &String =

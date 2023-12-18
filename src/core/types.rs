@@ -8,12 +8,7 @@ pub enum GitObject {
 }
 
 #[derive(Debug, Clone)]
-pub struct FileType {
-    pub ftype: Option<String>,
-}
-
-#[derive(Debug, Clone)]
 pub enum FileTypes {
-    Utf8(FileType),
-    NonUTF8(FileType),
+    Utf8,
+    NonUTF8,
 }
