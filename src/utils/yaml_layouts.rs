@@ -1,15 +1,18 @@
 use super::get_current_branch::get_current_branch;
+use chrono::Utc;
 use serde::{Deserialize, Serialize};
 use std::{fs, io, path::Path};
 
 #[derive(Serialize, Deserialize, PartialEq, Debug)]
 pub struct InitLayout {
+    pub created_at: String,
     pub current_branch: String,
     pub branches: Vec<String>,
 }
 
 #[derive(Serialize, Deserialize, PartialEq, Debug)]
 pub struct ConfigLayout {
+    created_at: String,
     head: String,
     commits: Vec<Commit>,
 }
@@ -28,6 +31,7 @@ struct Hash {
 impl Default for ConfigLayout {
     fn default() -> Self {
         ConfigLayout {
+            created_at: Utc::now().to_string(),
             head: String::new(),
             commits: Vec::new(),
         }

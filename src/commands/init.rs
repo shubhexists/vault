@@ -1,3 +1,4 @@
+use chrono::Utc;
 //This will have an init function which will currently create a .vault folder in the current directory
 // VAULT INIT
 use crate::commands::{create::create, switch::switch};
@@ -25,6 +26,7 @@ pub fn init() {
 
 fn get_init_data() -> String {
     let yaml_struct: InitLayout = InitLayout {
+        created_at: Utc::now().to_string(),
         current_branch: String::new(),
         branches: Vec::new(),
     };

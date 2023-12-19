@@ -4,4 +4,4 @@ pub mod init;
 pub mod switch;
 pub mod cat;
 pub mod delete;
-
+pub mod log;
