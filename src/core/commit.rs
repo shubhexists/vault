@@ -1,3 +1,5 @@
+use crate::utils::yaml_layouts;
+use crate::utils::yaml_layouts::ConfigLayout;
 use chrono::{DateTime, Utc};
 use std::io;
 
@@ -25,16 +27,27 @@ impl Commit {
     pub fn new_commit(commit_message: &str, root_repository_tree_hash: String) -> io::Result<Self> {
         let date_time: DateTime<Utc> = Utc::now();
         let username: String = whoami::realname();
-        //@TODO - For now kept it None, read the last commit in the yaml and add it to this param..
-        let parent: Option<String> = Option::None;
+        let parent: Option<yaml_layouts::Commit> = ConfigLayout::get_last_commit();
         let commit_hash: String = root_repository_tree_hash;
-        Ok(Commit {
-            date_time,
-            message: commit_message.to_string(),
-            author: username,
-            commit_hash,
-            parent,
-        })
+        match parent {
+            Some(parent) => {
+                let parent = Some(parent.hash);
+                Ok(Commit {
+                    date_time,
+                    message: commit_message.to_string(),
+                    author: username,
+                    commit_hash,
+                    parent,
+                })
+            }
+            None => Ok(Commit {
+                date_time,
+                message: commit_message.to_string(),
+                author: username,
+                commit_hash,
+                parent: Option::None,
+            }),
+        }
     }
 
     pub fn get_content_of_commit(self) -> String {
@@ -43,6 +56,7 @@ impl Commit {
         content.push_str("tree ");
         content.push_str(&self.commit_hash);
         content.push('\n');
+        content.push_str("parent ");
         match self.parent {
             Some(parent_hash) => {
                 content.push_str(&parent_hash);
