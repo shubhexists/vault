@@ -14,13 +14,15 @@ pub struct InitLayout {
 pub struct ConfigLayout {
     created_at: String,
     head: String,
-    commits: Vec<Commit>,
+    pub commits: Vec<Commit>,
 }
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
 pub struct Commit {
     pub hash: String,
     pub message: String,
+    pub date: String,
+    pub author: String,
 }
 
 #[derive(Serialize, Deserialize, PartialEq, Debug)]

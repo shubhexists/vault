@@ -1,3 +1,5 @@
+use chrono::Utc;
+
 //VAULT COMMIT
 // Loop around the directory and make the commit
 // No add . apparently : )
@@ -204,6 +206,7 @@ pub fn commit(dir_path: &Path, message: &str) -> io::Result<()> {
                                                     let mut file: File = File::create(file_path)?;
                                                     let _ =
                                                         file.write_all(&compressed_commit_content);
+                                                    let username: String = whoami::realname();
                                                     //@TODO - Think what can we do here maybe?
                                                     let _write_in_config_file: Result<
                                                         (),
@@ -211,6 +214,8 @@ pub fn commit(dir_path: &Path, message: &str) -> io::Result<()> {
                                                     > = ConfigLayout::add_commit(
                                                         yaml_layouts::Commit {
                                                             hash: hash_commit_content_in_sha256,
+                                                            date: Utc::now().to_string(),
+                                                            author: username,
                                                             message: message.to_string(),
                                                         },
                                                     );

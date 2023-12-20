@@ -6,6 +6,7 @@ use std::env;
 use crate::commands::init::init;
 use clap::{Parser, Subcommand};
 use commands::delete::delete;
+use commands::log::log;
 use commands::{cat::cat, commit::commit, create::create, switch::switch};
 
 #[derive(Parser)]
@@ -34,6 +35,8 @@ enum Arguments {
     Cat { hash_string: String },
     /// Deletes the given branch, Use `vault delete .` to entirely remove vault from your directory!
     Delete { branch_name: String },
+    ///
+    Log,
 }
 
 fn main() {
@@ -46,6 +49,7 @@ fn main() {
             Arguments::Switch { branch_name } => switch(&branch_name),
             Arguments::Cat { hash_string } => cat(&hash_string).unwrap(),
             Arguments::Delete { branch_name } => delete(&branch_name).unwrap(),
+            Arguments::Log => log().unwrap(),
         };
     } else {
         eprintln!("Failed to get the current working directory");
