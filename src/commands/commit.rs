@@ -1,8 +1,7 @@
-use chrono::Utc;
-
 //VAULT COMMIT
 // Loop around the directory and make the commit
 // No add . apparently : )
+use chrono::Utc;
 use crate::core::blob::Blob;
 use crate::core::commit::Commit;
 use crate::core::tree::{Tree, TreeEntry};

@@ -13,6 +13,12 @@ pub fn cat(hash_string: &str) -> io::Result<()> {
     let file_path: std::path::PathBuf = hash_dir_path.join(file_path);
     // Since this would read from the current directory only,  If the file is not found, prompt the user to check if his directory is correct
     let file: File = File::open(file_path)?;
-    let _ = decompress_zlib(file);
+    let decompressed = decompress_zlib(file);
+    match decompressed {
+        Ok(decompressed) => {
+            println!("{decompressed}")
+        }
+        Err(e) => panic!("Unable to read: {e}"),
+    }
     Ok(())
 }

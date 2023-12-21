@@ -9,11 +9,10 @@ pub fn compress_zlib(data: &str) -> std::io::Result<Vec<u8>> {
     encoder.finish()
 }
 
-pub fn decompress_zlib(file_path: File) -> io::Result<()> {
+pub fn decompress_zlib(file_path: File) -> io::Result<String> {
     let mut decoder: ZlibDecoder<File> = ZlibDecoder::new(file_path);
     let mut decompressed_data: Vec<u8> = Vec::new();
     decoder.read_to_end(&mut decompressed_data)?;
     let decompressed_string: String = String::from_utf8_lossy(&decompressed_data).into_owned();
-    println!("{decompressed_string}");
-    Ok(())
+    Ok(decompressed_string)
 }

@@ -30,7 +30,7 @@ impl Tree {
             tree_content.push_str(&tree_entry_content);
             tree_content.push('\n');
         }
-        let content_size = String::from(tree_content.clone()).chars().count() as i32;
+        let content_size: i32 = String::from(tree_content.clone()).chars().count() as i32;
         Ok(Tree {
             entries,
             content: tree_content,
@@ -55,5 +55,18 @@ impl Tree {
         file_content.push('\0');
         file_content.push_str(&entry.hashed_path);
         file_content
+    }
+
+    pub fn get_tree_from_content(tree_content: &String) -> Option<Tree> {
+        let break_by_new_line: Vec<&str> = tree_content.split("\n").collect();
+        let tree_entry_contents: Vec<TreeEntry> = Vec::new();
+        todo!()
+    }
+}
+
+impl TreeEntry {
+    pub fn check_valid_tree_entry(tree_entry_content: &str) -> bool {
+        let tree_entry_content: Vec<&str> = tree_entry_content.split("\0").collect();
+        todo!()
     }
 }

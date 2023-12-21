@@ -68,4 +68,27 @@ impl Blob {
         file_content.push_str(&self.content);
         file_content
     }
+
+    pub fn get_blob_from_content(blob_content: &String) -> Blob {
+        let blob_content_split: Vec<&str> = blob_content.split("\0").collect();
+        let is_vaild_blob: bool = Blob::check_valid_blob(&blob_content_split);
+        if is_vaild_blob {
+            Blob::parse_vec_of_contents(&blob_content_split)
+        } else {
+            panic!("Invalid Blob Content")
+        }
+    }
+
+    fn check_valid_blob(blob_contents: &Vec<&str>) -> bool {
+        if blob_contents[0] == "blob " {
+            if blob_contents.len() == 4 {
+                return true;
+            }
+        }
+        false
+    }
+
+    fn parse_vec_of_contents(blob_content: &Vec<&str>) -> Blob {
+        todo!()
+    }
 }

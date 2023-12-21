@@ -1,6 +1,6 @@
 use crate::utils::yaml_layouts;
 use crate::utils::yaml_layouts::ConfigLayout;
-use chrono::{DateTime, Utc};
+use chrono::Utc;
 use std::io;
 
 /* SAMPLE COMMIT
@@ -15,7 +15,7 @@ message `Commit message goes here.`
 
 #[derive(Debug)]
 pub struct Commit {
-    date_time: DateTime<Utc>,
+    date_time: String,
     message: String,
     author: String,
     commit_hash: String,
@@ -25,13 +25,13 @@ pub struct Commit {
 impl Commit {
     //This function is not error handled
     pub fn new_commit(commit_message: &str, root_repository_tree_hash: String) -> io::Result<Self> {
-        let date_time: DateTime<Utc> = Utc::now();
+        let date_time: String = Utc::now().to_string();
         let username: String = whoami::realname();
         let parent: Option<yaml_layouts::Commit> = ConfigLayout::get_last_commit();
         let commit_hash: String = root_repository_tree_hash;
         match parent {
             Some(parent) => {
-                let parent = Some(parent.hash);
+                let parent: Option<String> = Some(parent.hash);
                 Ok(Commit {
                     date_time,
                     message: commit_message.to_string(),
@@ -73,5 +73,53 @@ impl Commit {
         content.push_str("message ");
         content.push_str(&self.message);
         content
+    }
+
+    pub fn get_commit_from_content(commit_content: &String) -> Option<Commit> {
+        let break_by_new_line_char: Vec<&str> = commit_content.split("\n").collect();
+        let is_valid_commit: bool = Commit::check_valid_content(&break_by_new_line_char);
+        if is_valid_commit {
+            let commit_object: Commit = Commit::parse_vec_of_contents(&break_by_new_line_char);
+            return Some(commit_object)
+        }
+        None
+    }
+
+    fn check_valid_content(contents: &Vec<&str>) -> bool {
+        if contents.len() == 5 {
+            if contents[0].contains("tree ") {
+                if contents[1].contains("parent") {
+                    if contents[2].contains("author") {
+                        if contents[3].contains("date_time") {
+                            if contents[4].contains("message") {
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        false
+    }
+
+    fn parse_vec_of_contents(contents: &Vec<&str>) -> Commit {
+        let tree_hash: &str = &contents[0][5..];
+        let parent = || -> Option<String> {
+            if contents[1][7..].is_empty() {
+                None
+            } else {
+                Some(contents[1][7..].to_string())
+            }
+        };
+        let author: &str = &contents[2][7..];
+        let date_time: &str = &contents[3][10..];
+        let message: &str = &contents[4][8..];
+        Commit {
+            commit_hash: tree_hash.to_string(),
+            message: message.to_string(),
+            date_time: date_time.to_string(),
+            author: author.to_string(),
+            parent: parent(),
+        }
     }
 }
