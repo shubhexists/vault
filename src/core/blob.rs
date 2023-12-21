@@ -89,6 +89,20 @@ impl Blob {
     }
 
     fn parse_vec_of_contents(blob_content: &Vec<&str>) -> Blob {
-        todo!()
+        let filetype: FileTypes = match blob_content[1] {
+            "UTF" => FileTypes::Utf8,
+            "NonUTF" => FileTypes::NonUTF8,
+            _ => panic!("Unknown file type of Blob"),
+        };
+        let content: String = blob_content[3].to_string();
+        let content_size: Result<i32, std::num::ParseIntError> = blob_content[2].parse::<i32>();
+        match content_size {
+            Ok(content_size) => Blob {
+                content,
+                is_utf8: filetype,
+                content_size,
+            },
+            Err(e) => panic!("{e}"),
+        }
     }
 }

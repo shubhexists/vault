@@ -18,7 +18,7 @@ pub struct Commit {
     date_time: String,
     message: String,
     author: String,
-    commit_hash: String,
+    pub commit_hash: String,
     parent: Option<String>,
 }
 
@@ -75,14 +75,14 @@ impl Commit {
         content
     }
 
-    pub fn get_commit_from_content(commit_content: &String) -> Option<Commit> {
+    pub fn get_commit_from_content(commit_content: &String) -> Commit {
         let break_by_new_line_char: Vec<&str> = commit_content.split("\n").collect();
         let is_valid_commit: bool = Commit::check_valid_content(&break_by_new_line_char);
         if is_valid_commit {
             let commit_object: Commit = Commit::parse_vec_of_contents(&break_by_new_line_char);
-            return Some(commit_object)
+            return commit_object;
         }
-        None
+        panic!("Unable to get commit content!")
     }
 
     fn check_valid_content(contents: &Vec<&str>) -> bool {

@@ -14,7 +14,8 @@ pub fn create_fs(commit_hash: &String, path: &String, branch: &String) -> io::Re
     let hash_file_path: std::path::PathBuf = hash_dir.join(file_name);
     let file: File = File::open(hash_file_path)?;
     let commit_string: String = decompress_zlib(file).unwrap();
-    let commit_object: Option<Commit> = Commit::get_commit_from_content(&commit_string);
-    println!("{:?}", commit_object);
+    let commit_object: Commit = Commit::get_commit_from_content(&commit_string);
+    let root_dir_hash: String = commit_object.commit_hash;
     Ok(())
 }
+
