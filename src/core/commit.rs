@@ -20,11 +20,16 @@ pub struct Commit {
     author: String,
     pub commit_hash: String,
     parent: Option<String>,
+    parent_folder_name: String,
 }
 
 impl Commit {
     //This function is not error handled
-    pub fn new_commit(commit_message: &str, root_repository_tree_hash: String) -> io::Result<Self> {
+    pub fn new_commit(
+        commit_message: &str,
+        root_repository_tree_hash: String,
+        parent_folder_name: String,
+    ) -> io::Result<Self> {
         let date_time: String = Utc::now().to_string();
         let username: String = whoami::realname();
         let parent: Option<yaml_layouts::Commit> = ConfigLayout::get_last_commit();
@@ -38,6 +43,7 @@ impl Commit {
                     author: username,
                     commit_hash,
                     parent,
+                    parent_folder_name,
                 })
             }
             None => Ok(Commit {
@@ -46,6 +52,7 @@ impl Commit {
                 author: username,
                 commit_hash,
                 parent: Option::None,
+                parent_folder_name,
             }),
         }
     }
@@ -72,6 +79,9 @@ impl Commit {
         content.push('\n');
         content.push_str("message ");
         content.push_str(&self.message);
+        content.push('\n');
+        content.push_str("root_dir ");
+        content.push_str(&self.parent_folder_name);
         content
     }
 
@@ -86,13 +96,15 @@ impl Commit {
     }
 
     fn check_valid_content(contents: &Vec<&str>) -> bool {
-        if contents.len() == 5 {
+        if contents.len() == 6 {
             if contents[0].contains("tree ") {
                 if contents[1].contains("parent") {
                     if contents[2].contains("author") {
                         if contents[3].contains("date_time") {
                             if contents[4].contains("message") {
-                                return true;
+                                if contents[5].contains("root_dir") {
+                                    return true;
+                                }
                             }
                         }
                     }
@@ -114,12 +126,14 @@ impl Commit {
         let author: &str = &contents[2][7..];
         let date_time: &str = &contents[3][10..];
         let message: &str = &contents[4][8..];
+        let root_dir: &str = &contents[5][9..];
         Commit {
             commit_hash: tree_hash.to_string(),
             message: message.to_string(),
             date_time: date_time.to_string(),
             author: author.to_string(),
             parent: parent(),
+            parent_folder_name: root_dir.to_string(),
         }
     }
 }

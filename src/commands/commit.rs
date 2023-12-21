@@ -11,10 +11,10 @@ use crate::utils::hash::hash_in_sha256;
 use crate::utils::read_files::read_bytes;
 use crate::utils::yaml_layouts::{self, ConfigLayout};
 use chrono::Utc;
-use std::fs;
 use std::fs::File;
 use std::io::{self, Write};
 use std::path::{Path, PathBuf};
+use std::{env, fs};
 
 fn handle_commit(dir_path: &Path) -> io::Result<Vec<TreeEntry>> {
     let mut entries: Vec<TreeEntry> = Vec::new();
@@ -131,7 +131,8 @@ fn handle_commit(dir_path: &Path) -> io::Result<Vec<TreeEntry>> {
 
 pub fn commit(dir_path: &Path, message: &str) -> io::Result<()> {
     let commit: Result<Vec<TreeEntry>, io::Error> = handle_commit(dir_path);
-    let vault = Path::new(".vault");
+    let vault: &Path = Path::new(".vault");
+    let current_dir: String = env::current_dir().unwrap().to_str().unwrap().to_string();
     let current_branch: Result<String, io::Error> = get_current_branch();
     match current_branch {
         Ok(current_branch) => {
@@ -159,7 +160,7 @@ pub fn commit(dir_path: &Path, message: &str) -> io::Result<()> {
                             let mut file: File = File::create(file_path)?;
                             let _ = file.write_all(&compressed_content);
                             let current_commit: Result<Commit, io::Error> =
-                                Commit::new_commit(message, hash_main_dir_in_sha256);
+                                Commit::new_commit(message, hash_main_dir_in_sha256, current_dir);
                             match current_commit {
                                 Ok(current_commit) => {
                                     let commit_content: String =

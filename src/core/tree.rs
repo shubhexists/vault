@@ -60,6 +60,7 @@ impl Tree {
         let mut tree_entry_contents: Vec<TreeEntry> = Vec::new();
         for item in break_by_new_line {
             let tree_entry_content: Vec<&str> = item.split("\0").collect();
+            //REMOVE THIS
             println!("{:?}", tree_entry_content);
             let is_valid_tree_entry: bool = TreeEntry::check_valid_tree_entry(&tree_entry_content);
             if is_valid_tree_entry {
