@@ -1,7 +1,11 @@
 use super::get_current_branch::get_current_branch;
 use chrono::Utc;
 use serde::{Deserialize, Serialize};
-use std::{fs, io, path::Path};
+use std::{
+    borrow::Cow,
+    fs, io,
+    path::{Path, PathBuf},
+};
 
 #[derive(Serialize, Deserialize, PartialEq, Debug)]
 pub struct InitLayout {
@@ -42,15 +46,15 @@ impl Default for ConfigLayout {
 
 impl ConfigLayout {
     pub fn add_commit(commit_data: Commit) -> io::Result<()> {
-        let current_branch: Result<String, std::io::Error> = get_current_branch();
+        let current_branch: Result<String, io::Error> = get_current_branch();
         match current_branch {
             Ok(current_branch) => {
                 let vault_path: &Path = Path::new(".vault");
-                let branch_path: std::path::PathBuf = vault_path.join(current_branch);
-                let config_path: std::path::PathBuf = branch_path.join("config.yaml");
+                let branch_path: PathBuf = vault_path.join(current_branch);
+                let config_path: PathBuf = branch_path.join("config.yaml");
                 let content_bytes: Vec<u8> =
                     fs::read(&config_path).expect("Unable to read config.yaml");
-                let content: std::borrow::Cow<'_, str> = String::from_utf8_lossy(&content_bytes);
+                let content: Cow<'_, str> = String::from_utf8_lossy(&content_bytes);
                 let mut config_content: ConfigLayout = serde_yaml::from_str(&content).unwrap();
                 config_content.head = commit_data.hash.to_string();
                 config_content.commits.push(commit_data);
@@ -62,7 +66,7 @@ impl ConfigLayout {
         }
     }
     pub fn get_last_commit() -> Option<Commit> {
-        let current_branch: Result<String, std::io::Error> = get_current_branch();
+        let current_branch: Result<String, io::Error> = get_current_branch();
         match current_branch {
             Ok(current_branch) => {
                 let vault_path: &Path = Path::new(".vault");
@@ -70,7 +74,7 @@ impl ConfigLayout {
                 let config_path: std::path::PathBuf = branch_path.join("config.yaml");
                 let content_bytes: Vec<u8> =
                     fs::read(config_path).expect("Unable to read config.yaml");
-                let content: std::borrow::Cow<'_, str> = String::from_utf8_lossy(&content_bytes);
+                let content: Cow<'_, str> = String::from_utf8_lossy(&content_bytes);
                 let config_content: ConfigLayout = serde_yaml::from_str(&content).unwrap();
                 let last_commit: Option<Commit> = config_content.commits.last().cloned();
                 last_commit

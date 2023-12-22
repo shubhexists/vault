@@ -2,7 +2,6 @@ mod commands;
 mod core;
 mod utils;
 use std::env;
-
 use crate::commands::init::init;
 use clap::{Parser, Subcommand};
 use commands::delete::delete;
@@ -38,11 +37,11 @@ enum Arguments {
     Delete { branch_name: String },
     /// Get a commit history of the current branch
     Log,
-    ///
+    /// Get back to any specified point of your repository!
     Revert {
         #[arg(short, long)]
         level: usize,
-        path: String
+        path: String,
     },
 }
 
@@ -57,7 +56,7 @@ fn main() {
             Arguments::Cat { hash_string } => cat(&hash_string).unwrap(),
             Arguments::Delete { branch_name } => delete(&branch_name).unwrap(),
             Arguments::Log => log().unwrap(),
-            Arguments::Revert { level , path} => revert(&level, &path).unwrap(),
+            Arguments::Revert { level, path } => revert(&level, &path).unwrap(),
         };
     } else {
         eprintln!("Failed to get the current working directory");

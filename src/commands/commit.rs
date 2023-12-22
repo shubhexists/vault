@@ -11,6 +11,7 @@ use crate::utils::hash::hash_in_sha256;
 use crate::utils::read_files::read_bytes;
 use crate::utils::yaml_layouts::{self, ConfigLayout};
 use chrono::Utc;
+use std::ffi::OsString;
 use std::fs::File;
 use std::io::{self, Write};
 use std::path::{Path, PathBuf};
@@ -27,7 +28,7 @@ fn handle_commit(dir_path: &Path) -> io::Result<Vec<TreeEntry>> {
             if let Ok(entries_result) = fs::read_dir(dir_path) {
                 for entry_result in entries_result {
                     if let Ok(entry) = entry_result {
-                        let entry_name: std::ffi::OsString = entry.file_name();
+                        let entry_name: OsString = entry.file_name();
                         if entry_name != ".vault" {
                             if entry
                                 .file_type()
@@ -48,11 +49,9 @@ fn handle_commit(dir_path: &Path) -> io::Result<Vec<TreeEntry>> {
                                                     hash_in_sha256(&string_to_be_hashed);
                                                 // Make a directory with the 1st two letters of the hash
                                                 let dir_name: &str = &hashed_tree_string[0..2];
-                                                let dir_path: std::path::PathBuf =
-                                                    vault_path.join(dir_name);
+                                                let dir_path: PathBuf = vault_path.join(dir_name);
                                                 let file_name: &str = &hashed_tree_string[2..];
-                                                let file_path: std::path::PathBuf =
-                                                    dir_path.join(file_name);
+                                                let file_path: PathBuf = dir_path.join(file_name);
                                                 // BAD LOGIC HERE !
                                                 if let Err(_) = fs::metadata(&dir_path) {
                                                     let _is_already_created =
@@ -91,11 +90,9 @@ fn handle_commit(dir_path: &Path) -> io::Result<Vec<TreeEntry>> {
                                             hash_in_sha256(&string_to_be_hashed);
                                         // Make a directory with the 1st two letters of the hash
                                         let dir_name: &str = &hashed_blob_string[0..2];
-                                        let dir_path: std::path::PathBuf =
-                                            vault_path.join(dir_name);
+                                        let dir_path: PathBuf = vault_path.join(dir_name);
                                         let file_name: &str = &hashed_blob_string[2..];
-                                        let file_path: std::path::PathBuf =
-                                            dir_path.join(file_name);
+                                        let file_path: PathBuf = dir_path.join(file_name);
                                         // BAD LOGIC HERE !
                                         if let Err(_) = fs::metadata(&dir_path) {
                                             let _is_already_created = fs::create_dir(dir_path)
@@ -148,9 +145,9 @@ pub fn commit(dir_path: &Path, message: &str) -> io::Result<()> {
                             let hash_main_dir_in_sha256: String =
                                 hash_in_sha256(&string_to_be_hashed);
                             let dir_name: &str = &&hash_main_dir_in_sha256[0..2];
-                            let dir_path: std::path::PathBuf = vault_path.join(dir_name);
+                            let dir_path: PathBuf = vault_path.join(dir_name);
                             let file_name: &str = &&hash_main_dir_in_sha256[2..];
-                            let file_path: std::path::PathBuf = dir_path.join(file_name);
+                            let file_path: PathBuf = dir_path.join(file_name);
                             // Not Good Logic ig?
                             if let Err(_) = fs::metadata(&dir_path) {
                                 let _is_already_created =

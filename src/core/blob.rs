@@ -1,5 +1,5 @@
 use super::types::FileTypes;
-use std::io;
+use std::{io, num, string};
 
 /* SAMPLE BLOB - for UTF-8 files...
 
@@ -20,8 +20,7 @@ pub struct Blob {
 
 impl Blob {
     pub fn new_blob(content: Vec<u8>) -> io::Result<Blob> {
-        let str_content: Result<String, std::string::FromUtf8Error> =
-            String::from_utf8(content.clone());
+        let str_content: Result<String, string::FromUtf8Error> = String::from_utf8(content.clone());
         match str_content {
             Ok(content) => {
                 let size: i32 = String::from(content.clone()).chars().count() as i32;
@@ -95,7 +94,7 @@ impl Blob {
             _ => panic!("Unknown file type of Blob"),
         };
         let content: String = blob_content[3].to_string();
-        let content_size: Result<i32, std::num::ParseIntError> = blob_content[2].parse::<i32>();
+        let content_size: Result<i32, num::ParseIntError> = blob_content[2].parse::<i32>();
         match content_size {
             Ok(content_size) => Blob {
                 content,

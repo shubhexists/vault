@@ -1,12 +1,13 @@
 use crate::utils::yaml_layouts::InitLayout;
+use std::borrow::Cow;
 use std::fs;
-use std::path::Path;
+use std::path::{Path, PathBuf};
 
 pub fn switch(branch_name: &String) {
     let vault_folder: &Path = Path::new(".vault");
-    let init_file: std::path::PathBuf = vault_folder.join("init.yaml");
+    let init_file: PathBuf = vault_folder.join("init.yaml");
     let content_bytes: Vec<u8> = fs::read(&init_file).unwrap();
-    let content: std::borrow::Cow<'_, str> = String::from_utf8_lossy(&content_bytes);
+    let content: Cow<'_, str> = String::from_utf8_lossy(&content_bytes);
     let mut init_content: InitLayout = serde_yaml::from_str(&content).unwrap();
     if init_content.branches.contains(branch_name) {
         init_content.current_branch = branch_name.to_string();

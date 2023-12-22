@@ -3,7 +3,7 @@ use flate2::{write::ZlibEncoder, Compression};
 use std::fs::File;
 use std::io::{self, Read, Write};
 
-pub fn compress_zlib(data: &str) -> std::io::Result<Vec<u8>> {
+pub fn compress_zlib(data: &str) -> io::Result<Vec<u8>> {
     let mut encoder: ZlibEncoder<Vec<u8>> = ZlibEncoder::new(Vec::new(), Compression::default());
     encoder.write_all(data.as_bytes())?;
     encoder.finish()

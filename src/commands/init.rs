@@ -1,19 +1,18 @@
-use chrono::Utc;
 //This will have an init function which will currently create a .vault folder in the current directory
 // VAULT INIT
 use crate::commands::{create::create, switch::switch};
 use crate::utils::yaml_layouts::InitLayout;
+use chrono::Utc;
 use std::fs::{self, create_dir};
-use std::path::Path;
+use std::path::{Path, PathBuf};
 
 pub fn init() {
     let vault_folder: &Path = Path::new(".vault");
-    let current_dir: std::path::PathBuf =
-        std::env::current_dir().expect("Unable to get current directory");
-    let ignore_file_path: std::path::PathBuf = current_dir.join(".vaultignore");
+    let current_dir: PathBuf = std::env::current_dir().expect("Unable to get current directory");
+    let ignore_file_path: PathBuf = current_dir.join(".vaultignore");
     match create_dir(vault_folder) {
         Ok(_) => {
-            let init_file: std::path::PathBuf = vault_folder.join("init.yaml");
+            let init_file: PathBuf = vault_folder.join("init.yaml");
             let content: String = get_init_data();
             fs::File::create(ignore_file_path).unwrap();
             fs::write(init_file, content).unwrap();
