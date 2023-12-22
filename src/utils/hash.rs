@@ -1,4 +1,4 @@
-//Docummentation - https://docs.rs/sha256/latest/sha256/
+//Documentation - https://docs.rs/sha256/latest/sha256/
 use sha256::digest;
 
 pub fn hash_in_sha256(string_to_hash: &str) -> String {

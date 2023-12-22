@@ -1,4 +1,5 @@
 use super::compress_zlib::decompress_zlib;
+use super::read_files::copy_directory_contents;
 use crate::core::blob::Blob;
 use crate::core::types::GitObject;
 use crate::core::{commit::Commit, tree::Tree};
@@ -22,10 +23,12 @@ pub fn create_fs(commit_hash: &String, path: &String, branch: &String) -> io::Re
     let _ = fs::create_dir(&temp_dir_path);
     let _ = navigate_through_dir_hash(&root_dir_hash, &current_branch_path, &temp_dir_path);
     if path == "./" || path == "." {
+        // To figure out, which are the files that are to be protected
     } else {
         let current_dir: PathBuf = env::current_dir().unwrap();
         let new_dir: PathBuf = current_dir.join(path);
-        
+        let _ = copy_directory_contents(&temp_dir_path, &new_dir);
+        let _ = fs::remove_dir_all(temp_dir_path);
     }
     Ok(())
 }
