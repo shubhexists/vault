@@ -39,7 +39,6 @@ fn handle_commit(dir_path: &Path) -> io::Result<Vec<TreeEntry>> {
                                     Ok(subdirectory_entries) => {
                                         let sub_dir_tree: Tree =
                                             Tree::make_tree(subdirectory_entries);
-
                                         let string_to_be_hashed: &String = &sub_dir_tree.content;
                                         let compressed_content: Result<Vec<u8>, io::Error> =
                                             compress_zlib(&string_to_be_hashed);
@@ -55,7 +54,7 @@ fn handle_commit(dir_path: &Path) -> io::Result<Vec<TreeEntry>> {
                                                 let file_path: std::path::PathBuf =
                                                     dir_path.join(file_name);
                                                 // BAD LOGIC HERE !
-                                                if let Err(_) = fs::metadata(dir_path.clone()) {
+                                                if let Err(_) = fs::metadata(&dir_path) {
                                                     let _is_already_created =
                                                         fs::create_dir(dir_path)
                                                             .expect("Some error occurred");
@@ -98,7 +97,7 @@ fn handle_commit(dir_path: &Path) -> io::Result<Vec<TreeEntry>> {
                                         let file_path: std::path::PathBuf =
                                             dir_path.join(file_name);
                                         // BAD LOGIC HERE !
-                                        if let Err(_) = fs::metadata(dir_path.clone()) {
+                                        if let Err(_) = fs::metadata(&dir_path) {
                                             let _is_already_created = fs::create_dir(dir_path)
                                                 .expect("Some error occurred");
                                         }
@@ -153,7 +152,7 @@ pub fn commit(dir_path: &Path, message: &str) -> io::Result<()> {
                             let file_name: &str = &&hash_main_dir_in_sha256[2..];
                             let file_path: std::path::PathBuf = dir_path.join(file_name);
                             // Not Good Logic ig?
-                            if let Err(_) = fs::metadata(dir_path.clone()) {
+                            if let Err(_) = fs::metadata(&dir_path) {
                                 let _is_already_created =
                                     fs::create_dir(dir_path).expect("Some error occurred");
                             }
@@ -179,8 +178,8 @@ pub fn commit(dir_path: &Path, message: &str) -> io::Result<()> {
                                                 vault_path.join(dir_name);
                                             let file_path: PathBuf = dir_path.join(file_name);
                                             // Not Good Logic ig?
-                                            if let Err(_) = fs::metadata(dir_path.clone()) {
-                                                let _is_already_created = fs::create_dir(dir_path)
+                                            if let Err(_) = fs::metadata(&dir_path) {
+                                                let _is_already_created = fs::create_dir(&dir_path)
                                                     .expect("Some error occurred");
                                             }
                                             let mut file: File = File::create(file_path)?;

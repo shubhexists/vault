@@ -15,7 +15,7 @@ blob \0NonUTF\036\0123,345,4,6,7,7,43,142,32,44
 pub struct Blob {
     is_utf8: FileTypes,
     pub content_size: i32,
-    content: String,
+    pub content: String,
 }
 
 impl Blob {

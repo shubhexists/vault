@@ -10,7 +10,7 @@ tree \0folderA\0ab89abcdef0123456789abcdef0123456789ab
 pub struct Tree {
     pub entries: Vec<TreeEntry>,
     pub content: String,
-    content_size: i32,
+    pub content_size: i32,
 }
 
 #[derive(Debug)]

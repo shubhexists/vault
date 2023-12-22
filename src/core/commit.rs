@@ -20,7 +20,7 @@ pub struct Commit {
     author: String,
     pub commit_hash: String,
     parent: Option<String>,
-    parent_folder_name: String,
+    pub parent_folder_name: String,
 }
 
 impl Commit {
