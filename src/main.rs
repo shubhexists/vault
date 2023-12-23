@@ -1,13 +1,13 @@
 mod commands;
 mod core;
 mod utils;
-use std::env;
 use crate::commands::init::init;
 use clap::{Parser, Subcommand};
 use commands::delete::delete;
 use commands::log::log;
 use commands::revert::revert;
 use commands::{cat::cat, commit::commit, create::create, switch::switch};
+use std::env;
 
 #[derive(Parser)]
 #[command(author, version, about, long_about=None)]
@@ -24,7 +24,7 @@ enum Arguments {
     Init,
     /// Commit files to current branch
     Commit {
-        #[arg(short, long)]
+        #[arg(short, long, default_value = "")]
         message: String,
     },
     /// Create a new branch with given name
@@ -39,7 +39,7 @@ enum Arguments {
     Log,
     /// Get back to any specified point of your repository!
     Revert {
-        #[arg(short, long)]
+        #[arg(short, long, default_value = "1")]
         level: usize,
         path: String,
     },

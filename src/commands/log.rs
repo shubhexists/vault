@@ -25,7 +25,11 @@ pub fn log() -> io::Result<()> {
                 println!("Author: {}", commit.author);
                 println!("Date:   {}", commit.date);
                 println!();
-                println!("   {}", commit.message);
+                if commit.message == "" {
+                    println!("   \u{001b}[34m[No Commit Message] \u{001b}[0m");
+                } else {
+                    println!("   {}", commit.message);
+                }
                 println!();
             }
             Ok(())
