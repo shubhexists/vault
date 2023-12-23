@@ -1,5 +1,5 @@
 [package]
-name = "vault"
+name = "vault_vcs"
 version = "1.2.1"
 edition = "2021"
 author = "Shubham singh	<github: github.com/shubhexists>"
