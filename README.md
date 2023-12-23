@@ -1,5 +1,7 @@
 # Vault
 Vault will be a command line tool (if successful) similar to git which would have multiple features like brances etc etc. 
+
+Drop of a ✨ if you are here. It would mean a lot : )
 ```
 __     __          _ _   
 \ \   / /_ _ _   _| | |_ 
@@ -28,7 +30,7 @@ cargo install vault_vcs
 - [Git Book](https://git-scm.com/book/en/v2/Git-Internals-Git-Objects)
 - [Article](https://dev.to/nopenoshishi/make-your-original-git-analyze-section-139d#de)
 
-### Contributing 
+### From Source 
 1) Clone this repository by running the command
 ```
 git clone https://github.com/shubhexists/vault
@@ -66,7 +68,7 @@ vault revert -l "No. of commits" "dir_name"
 ```
 - Parameter ` -l ` or ` --level ` defines the number of commits to go back.. For eg. -l 2 would go back 2 commits in the repository. If nothing is provided , default vaule would be taken as 1.
 
-- ` dir_name ` requires a directory name in which the files would be added. If nothing is provided, it would replace the files of the current directory..
+- ` dir_name ` requires a directory name in which the files would be added. If nothing is provided, it would replace the files of the current directory.. (wip)
 
 For eg. for `vault revert -l 2 hello`, a new directory would be created namely `hello`, that would have the files 2 commits ago.. 
 
@@ -89,3 +91,15 @@ Note - Output of vault log just consists of the logs of current active branch.
 ```
 vault cat hash_string_to_read
 ```
+Note - `vault cat` command should be run in the root directory. i.e. the directory in which ` .vault ` exists.
+![Screenshot from 2023-12-23 10-05-08](https://github.com/shubhexists/vault/assets/110319892/f9907727-d492-4e5f-ac85-83605079a3b1)
+
+# Limitations / WIP
+1) ` .vaultignore ` is not functional currently
+2) To add - Test cases and subsequent workflows
+3) Add more useful commands 
+
+There would be probably many more! Some of them are in the [issues](https://github.com/shubhexists/vault/issues).
+
+# Thanks
+If you read till here, thanks for showing interest in the project :)
