@@ -9,7 +9,7 @@ license-file = "LICENSE"
 repository = "https://github.com/shubhexists/vault"
 categories = ["cli", "version-control", "git","command-line-utilities"]
 keywords = ["cli", "version-control", "git","command-line-utilities"]
-readme = "https://github.com/shubhexists/vault?tab=readme-ov-file#vault"
+readme = "README.md"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
