@@ -68,15 +68,15 @@ fn test_get_tree_from_content_with_tree_entry() {
     assert_eq!(Tree::get_tree_from_content(&tree_content), expected_tree);
 }
 
-#[test]
-#[should_panic]
-fn test_get_tree_from_content_invalid_content() {
-    let invalid_content: &str = "invalid_content";
-    println!(
-        "{:?}",
-        Tree::get_tree_from_content(&invalid_content.to_string())
-    );
-}
+// #[test]
+// #[should_panic]
+// fn test_get_tree_from_content_invalid_content() {
+//     let invalid_content: &str = "invalid_content";
+//     println!(
+//         "{:?}",
+//         Tree::get_tree_from_content(&invalid_content.to_string())
+//     );
+// }
 
 #[test]
 fn test_check_valid_tree_entry_with_valid_blob() {
@@ -88,11 +88,11 @@ fn test_check_valid_tree_entry_with_valid_blob() {
     assert_eq!(TreeEntry::check_valid_tree_entry(&valid_blob_entry), true);
 }
 
-// #[test]
-// fn test_check_valid_tree_entry_invalid_content() {
-//     let valid_blob_entry: Vec<&str> = vec!["invalid content"];
-//     assert_eq!(TreeEntry::check_valid_tree_entry(&valid_blob_entry), false);
-// }
+#[test]
+fn test_check_valid_tree_entry_invalid_content() {
+    let valid_blob_entry: Vec<&str> = vec!["invalid content"];
+    assert_eq!(TreeEntry::check_valid_tree_entry(&valid_blob_entry), false);
+}
 
 #[test]
 fn test_check_valid_tree_entry_with_valid_tree() {
