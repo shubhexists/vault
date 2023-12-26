@@ -13,8 +13,7 @@ message `Commit message goes here.`
 
 */
 
-#[derive(Debug)]
-#[derive(PartialEq)]
+#[derive(Debug, PartialEq)]
 pub struct Commit {
     pub date_time: String,
     pub message: String,

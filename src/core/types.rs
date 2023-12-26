@@ -4,7 +4,7 @@ pub enum GitObject {
     Tree,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum FileTypes {
     Utf8,
     NonUTF8,

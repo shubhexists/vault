@@ -11,9 +11,9 @@ blob \0UTF\023\0This is the content of the file.
 blob \0NonUTF\036\0123,345,4,6,7,7,43,142,32,44
  */
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct Blob {
-    is_utf8: FileTypes,
+    pub is_utf8: FileTypes,
     pub content_size: i32,
     pub content: String,
 }
