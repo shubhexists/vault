@@ -9,6 +9,9 @@ use commands::revert::revert;
 use commands::{cat::cat, commit::commit, create::create, switch::switch};
 use std::env;
 
+#[cfg(test)]
+mod tests;
+
 #[derive(Parser)]
 #[command(author, version, about, long_about=None)]
 #[command(propagate_version = true)]

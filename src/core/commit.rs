@@ -14,12 +14,13 @@ message `Commit message goes here.`
 */
 
 #[derive(Debug)]
+#[derive(PartialEq)]
 pub struct Commit {
-    date_time: String,
-    message: String,
-    author: String,
+    pub date_time: String,
+    pub message: String,
+    pub author: String,
     pub commit_hash: String,
-    parent: Option<String>,
+    pub parent: Option<String>,
     pub parent_folder_name: String,
 }
 
