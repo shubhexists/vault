@@ -6,14 +6,14 @@ blob \0fileA.txt\0123456789abcdef0123456789abcdef01234567
 tree \0folderA\0ab89abcdef0123456789abcdef0123456789ab
  */
 
-#[derive(Debug)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct Tree {
     pub entries: Vec<TreeEntry>,
     pub content: String,
     pub content_size: i32,
 }
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Clone)]
 pub struct TreeEntry {
     pub name: String,
     pub object: GitObject,
@@ -55,11 +55,12 @@ impl Tree {
 
     pub fn get_tree_from_content(tree_content: &String) -> Tree {
         let content_size: i32 = tree_content.chars().count() as i32;
-        let break_: Vec<&str> = tree_content.split("\n").collect();
-        let break_by_new_line: &[&str] = &break_[..break_.len() - 1];
+        let mut break_new_line: Vec<&str> = tree_content.split("\n").collect::<Vec<&str>>();
+        break_new_line.pop();
         let mut tree_entry_contents: Vec<TreeEntry> = Vec::new();
-        for item in break_by_new_line {
+        for item in break_new_line {
             let tree_entry_content: Vec<&str> = item.split("\0").collect();
+            println!("{:?}", tree_entry_content);
             let is_valid_tree_entry: bool = TreeEntry::check_valid_tree_entry(&tree_entry_content);
             if is_valid_tree_entry {
                 let tree_entry_object: TreeEntry =

@@ -1,10 +1,9 @@
 [package]
 name = "vault_vcs"
-version = "1.2.2"
+version = "1.2.3"
 edition = "2021"
 author = "Shubham singh	<github: github.com/shubhexists>"
 description = "A simplified version control system built in Rust for local files, quite similar to how git functions."
-license = "MIT"
 license-file = "LICENSE"
 repository = "https://github.com/shubhexists/vault"
 categories = ["cli", "version-control", "git","developer-utility"]
