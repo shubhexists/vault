@@ -25,6 +25,7 @@ You can directly install from [Cargo](https://crates.io/crates/vault_vcs) by
 ```
 cargo install vault_vcs
 ```
+Note - This will install the binaries with executable name ` vault_vcs `. So, if you want to continue using ` vault ` as an executable name, you can alias ` vault_vcs ` to ` vault ` or build it from source.
 
 ### References
 - [Git Book](https://git-scm.com/book/en/v2/Git-Internals-Git-Objects)
